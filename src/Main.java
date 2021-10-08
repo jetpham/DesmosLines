@@ -3,6 +3,8 @@ package src;
 import java.nio.file.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Main {
     public static double[][] getPointTable() {
@@ -39,9 +41,21 @@ public class Main {
             oldPoint = newPoint;
         }
         linesArray = lines.toArray(linesArray);
+        String essay = "";
+        int index = 1;
         for (Line i : linesArray) {
-            String j = i.lineForDesmos();
-            System.out.println(j);
+            essay = essay + "Line " + index + ":\n" + i.lineForNormalWithWork() + "\n\n";
+            index++;
+        }
+        try {
+            FileWriter myWriter = new FileWriter(
+                    "C:\\Users\\Jet Pham\\Documents\\repos\\DesmosLines\\src\\main\\resources\\output.txt");
+            myWriter.write(essay);
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
         }
     }
 }

@@ -1,6 +1,6 @@
 (function () {
   "use strict";
-  let index = 2;
+  let index = 0;
   let expressions = Calc.getExpressions();
   if (
     typeof expressions[index] !== "undefined" &&
