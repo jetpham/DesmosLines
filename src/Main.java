@@ -3,7 +3,6 @@ package src;
 import java.nio.file.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Main {
     public static double[][] getPointTable() {
@@ -12,7 +11,7 @@ public class Main {
         double[][] pointsArray = { {} };
         try {
             text = new String(Files.readAllBytes(
-                Paths.get("C:\\Users\\Jet-Laptop\\Desktop\\DesmosLines\\src\\main\\resources\\numbers.txt")));
+                    Paths.get("C:\\Users\\Jet Pham\\Documents\\repos\\DesmosLines\\src\\main\\resources\\points.txt")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -31,18 +30,18 @@ public class Main {
         double[] oldPoint = {};
 
         for (double[] i : getPointTable()) {
-            System.out.println("(" + i[0] + ", " + i[1] + ")");
+            // System.out.println("(" + i[0] + ", " + i[1] + ")");
             double[] newPoint = { i[0], i[1] };
             if (!firstPoint) {
                 lines.add(new Line(oldPoint, newPoint));
-                firstPoint = false;
             }
+            firstPoint = false;
             oldPoint = newPoint;
         }
         linesArray = lines.toArray(linesArray);
         for (Line i : linesArray) {
-            System.out.println(i.dumpInfo());
-            System.out.println(i.lineForNormal());
+            String j = i.lineForDesmos();
+            System.out.println(j);
         }
     }
 }

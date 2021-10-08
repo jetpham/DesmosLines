@@ -21,7 +21,7 @@ public class Line {
                 domain[0] = oldPoint[0];
                 domain[1] = newPoint[0];
             }
-            System.out.println("linetype 0: horizontal line");
+            // System.out.println("linetype 0: horizontal line");
         } else if (oldPoint[0] == newPoint[0]) {
             lineType = 1;
             slope = 1;
@@ -33,7 +33,7 @@ public class Line {
                 range[0] = oldPoint[1];
                 range[1] = newPoint[1];
             }
-            System.out.println("linetype 1: vertical line");
+            // System.out.println("linetype 1: vertical line");
         } else {
             lineType = 2;
             slope = (oldPoint[1] - newPoint[1]) / (oldPoint[0] - newPoint[0]);
@@ -46,10 +46,11 @@ public class Line {
                 domain[0] = oldPoint[0];
                 domain[1] = newPoint[0];
             }
-            System.out.println("linetype 2: diagnal line");
+            // System.out.println("linetype 2: diagnal line");
         }
-        System.out.println("domain: {" + domain[0] + ", " + domain[1] + "}, range: " + range[0] + ", " + range[1]
-                + "}, slope: " + slope + ", yInt: " + yInt);
+        // System.out.println("domain: {" + domain[0] + ", " + domain[1] + "}, range: "
+        // + range[0] + ", " + range[1]
+        // + "}, slope: " + slope + ", yInt: " + yInt);
     }
 
     public String dumpInfo() {
@@ -61,22 +62,22 @@ public class Line {
         switch (lineType) {
             case 0:
                 returnedLine = "y = " + yInt + "\\left\\{" + domain[0] + "\\le x\\le" + domain[1] + "\\right\\}";
-                System.out.println("lineForDesmos: case 0");
+                // System.out.println("lineForDesmos: case 0");
                 break;
             case 1:
                 returnedLine = "x = " + yInt + "\\left\\{" + range[0] + "\\le y\\le" + range[1] + "\\right\\}";
-                System.out.println("lineForDesmos: case 1");
+                // System.out.println("lineForDesmos: case 1");
                 break;
             case 2:
-                System.out.println("lineForDesmos: case 2");
+                // System.out.println("lineForDesmos: case 2");
                 if (positiveYInt) {
                     returnedLine = "y = " + slope + "x + " + yInt + "\\left\\{" + domain[0] + "\\le x\\le" + domain[1]
                             + "\\right\\}";
-                    System.out.println("Positive yInt");
+                    // System.out.println("Positive yInt");
                 } else {
                     returnedLine = "y = " + slope + "x - " + Math.abs(yInt) + "\\left\\{" + domain[0] + "\\le x\\le"
                             + domain[1] + "\\right\\}";
-                    System.out.println("Not positive yInt");
+                    // System.out.println("Not positive yInt");
                 }
                 break;
             default:
