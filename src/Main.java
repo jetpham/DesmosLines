@@ -1,10 +1,10 @@
 package src;
 
-import java.nio.file.*;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 
 public class Main {
     public static double[][] getPointTable() {
@@ -32,7 +32,6 @@ public class Main {
         double[] oldPoint = {};
 
         for (double[] i : getPointTable()) {
-            // System.out.println("(" + i[0] + ", " + i[1] + ")");
             double[] newPoint = { i[0], i[1] };
             if (!firstPoint) {
                 lines.add(new Line(oldPoint, newPoint));

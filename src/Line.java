@@ -3,21 +3,25 @@ package src;
 import java.lang.Math;
 
 public class Line {
-    private double[] domain = { 0, 0 };
-    private double[] range = { 0, 0 };
-    private double slope = 0;
-    private double yInt = 0;
-    private boolean positiveYInt = true;
-    private int lineType = 0;
-    double[] oldPointForWork = {};
-    double[] newPointForWork = {};
+    private double[] domain = { 0, 0 }; // domain for functions that follow 'y ='
+    private double[] range = { 0, 0 }; // range for functions that follow 'x ='
+    private double slope = 0; // the slope for diagnal lines
+    private double yInt = 0; // the y intercept for 'y =' functions & x values for 'x =' functions
+    private boolean positiveYInt = true; // Is Yint positive or negative. used for determining how to format 'y = mx +
+                                         // b' functions
+    private int lineType = 0; // 0: 'y = b', 1: 'x = b', 2: 'y = mx + b'
+    private double[] oldPointForWork = {}; // for storing the original points. used later for the linesForNormalWithWork
+                                           // function
+    private double[] newPointForWork = {};
 
     public Line(double[] oldPoint, double[] newPoint) {
         oldPointForWork = oldPoint;
         newPointForWork = newPoint;
         if (oldPoint[1] == newPoint[1]) {
+            // 'y = b' function
             lineType = 0;
             yInt = oldPoint[1];
+            // setting domain
             if (oldPoint[0] >= newPoint[0]) {
                 domain[0] = newPoint[0];
                 domain[1] = oldPoint[0];
@@ -25,11 +29,11 @@ public class Line {
                 domain[0] = oldPoint[0];
                 domain[1] = newPoint[0];
             }
-            // System.out.println("linetype 0: horizontal line");
         } else if (oldPoint[0] == newPoint[0]) {
             lineType = 1;
             slope = 1;
             yInt = oldPoint[0];
+            // setting range
             if (oldPoint[1] >= newPoint[1]) {
                 range[0] = newPoint[1];
                 range[1] = oldPoint[1];
@@ -37,12 +41,14 @@ public class Line {
                 range[0] = oldPoint[1];
                 range[1] = newPoint[1];
             }
-            // System.out.println("linetype 1: vertical line");
         } else {
             lineType = 2;
+            // calculating slope using the (y1-y2)/(x1-x2) fomula
             slope = (oldPoint[1] - newPoint[1]) / (oldPoint[0] - newPoint[0]);
+            // calculating yInt using the b = y - (m * x) fomula
             yInt = oldPoint[1] - (slope * oldPoint[0]);
             positiveYInt = yInt >= 0;
+            // setting domain
             if (oldPoint[0] >= newPoint[0]) {
                 domain[0] = newPoint[0];
                 domain[1] = oldPoint[0];
@@ -50,38 +56,38 @@ public class Line {
                 domain[0] = oldPoint[0];
                 domain[1] = newPoint[0];
             }
-            // System.out.println("linetype 2: diagnal line");
         }
-        // System.out.println("domain: {" + domain[0] + ", " + domain[1] + "}, range: "
-        // + range[0] + ", " + range[1]
-        // + "}, slope: " + slope + ", yInt: " + yInt);
     }
 
-    public String dumpInfo() {
-        return "" + domain + range + slope + yInt + positiveYInt + lineType;
-    }
-
+    /**
+     * use the line type to determine which of the three different type os lines to
+     * output. There are horizontal lines, 'x = b' There are vertical lines, 'y = b'
+     * There are diagonal lines, 'y = mx + b' These lines all come with domain or
+     * range, whichever is appropriate for the type of line. Diagonal lines will
+     * always use domain rather than range.
+     * <p>
+     * curly braces and lesser than and equal too signs require additional
+     * characters to be formatted into desmos correctly
+     *
+     * @return string of the line formatted to be pasted into the desmos expression
+     *         lines.
+     */
     public String lineForDesmos() {
         String returnedLine = "";
         switch (lineType) {
-            case 0:
+            case 0: // 'y = b' equation
                 returnedLine = "y = " + yInt + "\\left\\{" + domain[0] + "\\le x\\le" + domain[1] + "\\right\\}";
-                // System.out.println("lineForDesmos: case 0");
                 break;
-            case 1:
+            case 1: // 'x = b' equation
                 returnedLine = "x = " + yInt + "\\left\\{" + range[0] + "\\le y\\le" + range[1] + "\\right\\}";
-                // System.out.println("lineForDesmos: case 1");
                 break;
-            case 2:
-                // System.out.println("lineForDesmos: case 2");
-                if (positiveYInt) {
+            case 2: // 'y = mx + b' equation
+                if (positiveYInt) { // if the y integer is positive. use a + for the mx + b
                     returnedLine = "y = " + slope + "x + " + yInt + "\\left\\{" + domain[0] + "\\le x\\le" + domain[1]
                             + "\\right\\}";
-                    // System.out.println("Positive yInt");
-                } else {
+                } else { // else use a - for mx - b and use abs on b. this is for formatting purposes
                     returnedLine = "y = " + slope + "x - " + Math.abs(yInt) + "\\left\\{" + domain[0] + "\\le x\\le"
                             + domain[1] + "\\right\\}";
-                    // System.out.println("Not positive yInt");
                 }
                 break;
             default:
@@ -90,19 +96,28 @@ public class Line {
         return returnedLine;
     }
 
+    /**
+     * use the line type to determine which of the three different type os lines to
+     * output. There are horizontal lines, 'x = b' There are vertical lines, 'y = b'
+     * There are diagonal lines, 'y = mx + b' These lines all come with domain or
+     * range, whichever is appropriate for the type of line. Diagonal lines will
+     * always use domain rather than range.
+     * 
+     * @return string of the line formatted using normal format
+     */
     public String lineForNormal() {
         String returnedLine = "";
         switch (lineType) {
-            case 0:
+            case 0: // 'y = b' equation
                 returnedLine = "y = " + yInt + " {" + domain[0] + "≤ x ≤" + domain[1] + "}";
                 break;
-            case 1:
+            case 1: // 'x = b' equation
                 returnedLine = "x = " + yInt + " {" + range[0] + "≤ y ≤" + range[1] + "}";
                 break;
-            case 2:
-                if (positiveYInt) {
+            case 2: // 'y = mx + b' equation
+                if (positiveYInt) { // if the y integer is positive. use a + for the mx + b
                     returnedLine = "y = " + slope + "x + " + yInt + " {" + domain[0] + "≤ x ≤" + domain[1] + "}";
-                } else {
+                } else { // else use a - for mx - b and use abs on b. this is for formatting purposes
                     returnedLine = "y = " + slope + "x - " + yInt + " {" + domain[0] + "≤ x ≤" + domain[1] + "}";
                 }
                 break;
@@ -112,6 +127,20 @@ public class Line {
         return returnedLine;
     }
 
+    /**
+     * use the line type to determine which of the three different type os lines to
+     * output. There are horizontal lines, 'x = b' There are vertical lines, 'y = b'
+     * There are diagonal lines, 'y = mx + b' These lines all come with domain or
+     * range, whichever is appropriate for the type of line. Diagonal lines will
+     * always use domain rather than range.
+     * <p>
+     * The work explination is made in full scentences and will incoporate the
+     * values for making the line. It also demostrates the calculations and
+     * substitutions.
+     *
+     * @return string of explination of how to solve for the linear line. The
+     *         equation in normal form is included
+     */
     public String lineForNormalWithWork() {
         String returnedLine = "";
         switch (lineType) {
