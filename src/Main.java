@@ -12,15 +12,12 @@ public class Main {
         double[][] pointsArray = { {} };
         try {
             text = new String(Files.readAllBytes(
-                    Paths.get("C:\\Users\\Jet-Laptop\\Desktop\\DesmosLines\\src\\main\\resources\\numbers.txt")));
+                Paths.get("C:\\Users\\Jet-Laptop\\Desktop\\DesmosLines\\src\\main\\resources\\numbers.txt")));
         } catch (IOException e) {
             e.printStackTrace();
         }
         for (String i : text.split("\n")) {
             double[] point = { Double.parseDouble(i.split("\t")[0]), Double.parseDouble(i.split("\t")[1]) };
-            // System.out.println("x: " + i.split("\t")[0] + " --- " +
-            // Double.parseDouble(i.split("\t")[0]) + "\ny: "
-            // + i.split("\t")[1] + " --- " + Double.parseDouble(i.split("\t")[1]));
             points.add(point);
         }
         pointsArray = points.toArray(pointsArray);
