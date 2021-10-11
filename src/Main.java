@@ -26,15 +26,15 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        ArrayList<Line> lines = new ArrayList<Line>();
+        ArrayList<LinearLine> lines = new ArrayList<LinearLine>();
         boolean firstPoint = true;
-        Line[] linesArray = {};
+        LinearLine[] linesArray = {};
         double[] oldPoint = {};
 
         for (double[] i : getPointTable()) {
             double[] newPoint = { i[0], i[1] };
             if (!firstPoint) {
-                lines.add(new Line(oldPoint, newPoint));
+                lines.add(new LinearLine(oldPoint, newPoint));
             }
             firstPoint = false;
             oldPoint = newPoint;
@@ -42,7 +42,7 @@ public class Main {
         linesArray = lines.toArray(linesArray);
         String essay = "";
         int index = 1;
-        for (Line i : linesArray) {
+        for (LinearLine i : linesArray) {
             essay = essay + "Line " + index + ":\n" + i.lineForNormalWithWork() + "\n\n";
             index++;
         }
