@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import src.lines.QuadraticLine;
+
 public class Main {
     public static double[][] getPointTable() {
         String text = "";
@@ -26,15 +28,15 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        ArrayList<LinearLine> lines = new ArrayList<LinearLine>();
+        ArrayList<QuadraticLine> lines = new ArrayList<QuadraticLine>();
         boolean firstPoint = true;
-        LinearLine[] linesArray = {};
+        QuadraticLine[] linesArray = {};
         double[] oldPoint = {};
 
         for (double[] i : getPointTable()) {
             double[] newPoint = { i[0], i[1] };
             if (!firstPoint) {
-                lines.add(new LinearLine(oldPoint, newPoint));
+                lines.add(new QuadraticLine(oldPoint, newPoint));
             }
             firstPoint = false;
             oldPoint = newPoint;
@@ -42,8 +44,8 @@ public class Main {
         linesArray = lines.toArray(linesArray);
         String essay = "";
         int index = 1;
-        for (LinearLine i : linesArray) {
-            essay = essay + "Line " + index + ":\n" + i.lineForNormalWithWork() + "\n\n";
+        for (QuadraticLine i : linesArray) {
+            essay = essay + i.lineForDesmos() + "\n";
             index++;
         }
         try {

@@ -1,13 +1,13 @@
-package src;
+package src.lines;
 
 import java.lang.Math;
 
 public class LinearLine {
     private double[] domain = { 0, 0 }; // domain for functions that follow 'y ='
     private double[] range = { 0, 0 }; // range for functions that follow 'x ='
-    private double slope = 0; // the slope for diagonal lines
-    private double yInt = 0; // the y intercept for 'y =' functions & x values for 'x =' functions
-    private boolean positiveYInt = true; // Is yInt positive or negative. used for determining how to format 'y = mx +
+    private double m = 0; // the slope for diagonal lines
+    private double b = 0; // the y intercept for 'y =' functions & x values for 'x =' functions
+    private boolean posB = true; // Is yInt positive or negative. used for determining how to format 'y = mx +
                                          // b' functions
     private int lineType = 0; // 0: 'y = b', 1: 'x = b', 2: 'y = mx + b'
     private double[] oldPointForWork = {}; // for storing the original points. used later for the linesForNormalWithWork
@@ -20,7 +20,7 @@ public class LinearLine {
         if (oldPoint[1] == newPoint[1]) {
             // 'y = b' function
             lineType = 0;
-            yInt = oldPoint[1];
+            b = oldPoint[1];
             // setting domain
             if (oldPoint[0] >= newPoint[0]) {
                 domain[0] = newPoint[0];
@@ -31,8 +31,8 @@ public class LinearLine {
             }
         } else if (oldPoint[0] == newPoint[0]) {
             lineType = 1;
-            slope = 1;
-            yInt = oldPoint[0];
+            m = 1;
+            b = oldPoint[0];
             // setting range
             if (oldPoint[1] >= newPoint[1]) {
                 range[0] = newPoint[1];
@@ -44,10 +44,10 @@ public class LinearLine {
         } else {
             lineType = 2;
             // calculating slope using the (y1-y2)/(x1-x2) formula
-            slope = (oldPoint[1] - newPoint[1]) / (oldPoint[0] - newPoint[0]);
+            m = (oldPoint[1] - newPoint[1]) / (oldPoint[0] - newPoint[0]);
             // calculating yInt using the b = y - (m * x) formula
-            yInt = oldPoint[1] - (slope * oldPoint[0]);
-            positiveYInt = yInt >= 0;
+            b = oldPoint[1] - (m * oldPoint[0]);
+            posB = b >= 0;
             // setting domain
             if (oldPoint[0] >= newPoint[0]) {
                 domain[0] = newPoint[0];
@@ -76,17 +76,17 @@ public class LinearLine {
         String returnedLine = "";
         switch (lineType) {
             case 0: // 'y = b' equation
-                returnedLine = "y = " + yInt + "\\left\\{" + domain[0] + "\\le x\\le" + domain[1] + "\\right\\}";
+                returnedLine = "y = " + b + "\\left\\{" + domain[0] + "\\le x\\le" + domain[1] + "\\right\\}";
                 break;
             case 1: // 'x = b' equation
-                returnedLine = "x = " + yInt + "\\left\\{" + range[0] + "\\le y\\le" + range[1] + "\\right\\}";
+                returnedLine = "x = " + b + "\\left\\{" + range[0] + "\\le y\\le" + range[1] + "\\right\\}";
                 break;
             case 2: // 'y = mx + b' equation
-                if (positiveYInt) { // if the y integer is positive. use a + for the mx + b
-                    returnedLine = "y = " + slope + "x + " + yInt + "\\left\\{" + domain[0] + "\\le x\\le" + domain[1]
+                if (posB) { // if the y integer is positive. use a + for the mx + b
+                    returnedLine = "y = " + m + "x + " + b + "\\left\\{" + domain[0] + "\\le x\\le" + domain[1]
                             + "\\right\\}";
                 } else { // else use a - for mx - b and use abs on b. this is for formatting purposes
-                    returnedLine = "y = " + slope + "x - " + Math.abs(yInt) + "\\left\\{" + domain[0] + "\\le x\\le"
+                    returnedLine = "y = " + m + "x - " + Math.abs(b) + "\\left\\{" + domain[0] + "\\le x\\le"
                             + domain[1] + "\\right\\}";
                 }
                 break;
@@ -109,16 +109,16 @@ public class LinearLine {
         String returnedLine = "";
         switch (lineType) {
             case 0: // 'y = b' equation
-                returnedLine = "y = " + yInt + " {" + domain[0] + "≤ x ≤" + domain[1] + "}";
+                returnedLine = "y = " + b + " {" + domain[0] + "≤ x ≤" + domain[1] + "}";
                 break;
             case 1: // 'x = b' equation
-                returnedLine = "x = " + yInt + " {" + range[0] + "≤ y ≤" + range[1] + "}";
+                returnedLine = "x = " + b + " {" + range[0] + "≤ y ≤" + range[1] + "}";
                 break;
             case 2: // 'y = mx + b' equation
-                if (positiveYInt) { // if the y integer is positive. use a + for the mx + b
-                    returnedLine = "y = " + slope + "x + " + yInt + " {" + domain[0] + "≤ x ≤" + domain[1] + "}";
+                if (posB) { // if the y integer is positive. use a + for the mx + b
+                    returnedLine = "y = " + m + "x + " + b + " {" + domain[0] + "≤ x ≤" + domain[1] + "}";
                 } else { // else use a - for mx - b and use abs on b. this is for formatting purposes
-                    returnedLine = "y = " + slope + "x - " + yInt + " {" + domain[0] + "≤ x ≤" + domain[1] + "}";
+                    returnedLine = "y = " + m + "x - " + b + " {" + domain[0] + "≤ x ≤" + domain[1] + "}";
                 }
                 break;
             default:
@@ -148,65 +148,65 @@ public class LinearLine {
                 returnedLine = "Point 1: (" + oldPointForWork[0] + ", " + oldPointForWork[1] + ") Point 2: ("
                         + newPointForWork[0] + ", " + newPointForWork[1] + ")\n"
                         + "X values are the same so it is a vertical line with an equation \'x = b\'\n"
-                        + "The equation for this line should be \'x = " + yInt + "\' since both points\' x values are "
-                        + yInt + ".\n"
+                        + "The equation for this line should be \'x = " + b + "\' since both points\' x values are "
+                        + b + ".\n"
                         + "Vertical lines should be restricted by range so we can take the lower of the y values, "
                         + domain[0]
                         + ", and use that as the lower bound of the range, we can then use the other y value, "
                         + domain[1] + ", and use that as the upper bound of the range.\n"
-                        + "We can then combine the equation and range to get the full equation: \n" + "\'x = " + yInt
+                        + "We can then combine the equation and range to get the full equation: \n" + "\'x = " + b
                         + " {" + domain[0] + "≤ x ≤" + domain[1] + "}\'";
                 break;
             case 1:
                 returnedLine = "Point 1: (" + oldPointForWork[0] + ", " + oldPointForWork[1] + ") Point 2: ("
                         + newPointForWork[0] + ", " + newPointForWork[1] + ")\n"
                         + "Y values are the same so it is a horizontal line with an equation \'y = b\'\n"
-                        + "The equation for this line should be \'y = " + yInt + "\' since both points\' y values are "
-                        + yInt + ".\n"
+                        + "The equation for this line should be \'y = " + b + "\' since both points\' y values are "
+                        + b + ".\n"
                         + "Horizontal lines should be restricted by domain so we can take the lower of the x values, "
                         + domain[0]
                         + ", and use that as the lower bound of the domain, we can then use the other x value, "
                         + domain[1] + ", and use that as the upper bound of the domain.\n"
-                        + "We can then combine the equation and domain to get the full equation: \n" + "\'y = " + yInt
+                        + "We can then combine the equation and domain to get the full equation: \n" + "\'y = " + b
                         + " {" + range[0] + "≤ y ≤" + range[1] + "}\'";
                 break;
             case 2:
-                if (positiveYInt) {
+                if (posB) {
                     returnedLine = "Point 1: (" + oldPointForWork[0] + ", " + oldPointForWork[1] + ") Point 2: ("
                             + newPointForWork[0] + ", " + newPointForWork[1] + ")\n"
                             + "Y values aren\'t the same and the x values aren\'t the same so it is a diagonal line with an equation \'y = mx + b\'\n"
                             + "We can calculate slope by using the equation slope = \'(y1-y2)/(x1-y2)\'. We can plug in our values: \'slope = (("
                             + oldPointForWork[1] + ")-(" + newPointForWork[1] + ")) / ((" + oldPointForWork[0] + ")-("
-                            + newPointForWork[0] + "))\' and evaluate it to be \'slope = " + slope + "\'.\n"
+                            + newPointForWork[0] + "))\' and evaluate it to be \'slope = " + m + "\'.\n"
                             + "We can calculate the y intercept by shuffling the \'y = mx + b\' equation to solve for \'b\'. To solve for \'b\', \'b = y - (m * x)\'. We can plug in these values, using our first point for our x and y values: \' b = ("
-                            + oldPointForWork[1] + ") - (" + slope + " * " + oldPointForWork[0]
-                            + ")\'. We can evaluate this to be \'b = " + yInt + "\'.\n"
+                            + oldPointForWork[1] + ") - (" + m + " * " + oldPointForWork[0]
+                            + ")\'. We can evaluate this to be \'b = " + b + "\'.\n"
                             + "Using the slope and y intercept, we can formulate that the equation for this linear equation is \'y = "
-                            + slope + "x + " + yInt + "\'.\n"
+                            + m + "x + " + b + "\'.\n"
                             + "Diagonal lines are normally restricted by domain so we can take the lower of the x values, "
                             + domain[0]
                             + ", and use that as the lower bound of the domain, we can then use the other x value, "
                             + domain[1] + ", and use that as the upper bound of the domain.\n"
                             + "We can then combine the equation and domain to get the full equation: \n" + "\'y = "
-                            + slope + "x + " + yInt + " {" + domain[0] + "≤ x ≤" + domain[1] + "}\'";
+                            + m + "x + " + b + " {" + domain[0] + "≤ x ≤" + domain[1] + "}\'";
                 } else {
                     returnedLine = "Point 1: (" + oldPointForWork[0] + ", " + oldPointForWork[1] + ") Point 2: ("
                             + newPointForWork[0] + ", " + newPointForWork[1] + ")\n"
                             + "Y values aren\'t the same and the x values aren\'t the same so it is a diagonal line with an equation \'y = mx + b\'\n"
                             + "We can calculate slope by using the equation slope = \'(y1-y2)/(x1-y2)\'. We can plug in our values: \'slope = (("
                             + oldPointForWork[1] + ")-(" + newPointForWork[1] + ")) / ((" + oldPointForWork[0] + ")-("
-                            + newPointForWork[0] + "))\' and evaluate it to be \'slope = " + slope + "\'.\n"
+                            + newPointForWork[0] + "))\' and evaluate it to be \'slope = " + m + "\'.\n"
                             + "We can calculate the y intercept by shuffling the \'y = mx + b\' equation to solve for \'b\'. To solve for \'b\', \'b = y - (m * x)\'. We can plug in these values, using our first point for our x and y values: \' b = ("
-                            + oldPointForWork[1] + ") - (" + slope + " * " + oldPointForWork[0]
-                            + ")\'. We can evaluate this to be \'b = " + yInt + "\'.\n"
+                            + oldPointForWork[1] + ") - (" + m + " * " + oldPointForWork[0]
+                            + ")\'. We can evaluate this to be \'b = " + b + "\'.\n"
                             + "Using the slope and y intercept, we can formulate that the equation for this linear equation is \'y = "
-                            + slope + "x + " + yInt + "\'.\n"
+                            + m + "x + " + b + "\'.\n"
                             + "Diagonal lines are normally restricted by domain so we can take the lower of the x values, "
                             + domain[0]
                             + ", and use that as the lower bound of the domain, we can then use the other x value, "
                             + domain[1] + ", and use that as the upper bound of the domain.\n"
                             + "We can then combine the equation and domain to get the full equation: \n" + "\'y = "
-                            + slope + "x - " + yInt + " {" + domain[0] + "≤ x ≤" + domain[1] + "}\'";
+                            + m + "x - " + b + " {" + domain[0] + "≤ x ≤" + domain[1] + "}\'";
                 }
                 break;
             default:

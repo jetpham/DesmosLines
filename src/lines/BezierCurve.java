@@ -1,4 +1,4 @@
-package src;
+package src.lines;
 
 public class BezierCurve {
     private double[] controlPoint1 = {};
