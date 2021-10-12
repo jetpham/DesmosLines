@@ -5,9 +5,9 @@ import java.lang.Math;
 public class LinearLine {
     private double[] domain = { 0, 0 }; // domain for functions that follow 'y ='
     private double[] range = { 0, 0 }; // range for functions that follow 'x ='
-    private double slope = 0; // the slope for diagnal lines
+    private double slope = 0; // the slope for diagonal lines
     private double yInt = 0; // the y intercept for 'y =' functions & x values for 'x =' functions
-    private boolean positiveYInt = true; // Is Yint positive or negative. used for determining how to format 'y = mx +
+    private boolean positiveYInt = true; // Is yInt positive or negative. used for determining how to format 'y = mx +
                                          // b' functions
     private int lineType = 0; // 0: 'y = b', 1: 'x = b', 2: 'y = mx + b'
     private double[] oldPointForWork = {}; // for storing the original points. used later for the linesForNormalWithWork
@@ -43,9 +43,9 @@ public class LinearLine {
             }
         } else {
             lineType = 2;
-            // calculating slope using the (y1-y2)/(x1-x2) fomula
+            // calculating slope using the (y1-y2)/(x1-x2) formula
             slope = (oldPoint[1] - newPoint[1]) / (oldPoint[0] - newPoint[0]);
-            // calculating yInt using the b = y - (m * x) fomula
+            // calculating yInt using the b = y - (m * x) formula
             yInt = oldPoint[1] - (slope * oldPoint[0]);
             positiveYInt = yInt >= 0;
             // setting domain
@@ -134,11 +134,11 @@ public class LinearLine {
      * range, whichever is appropriate for the type of line. Diagonal lines will
      * always use domain rather than range.
      * <p>
-     * The work explination is made in full scentences and will incoporate the
-     * values for making the line. It also demostrates the calculations and
+     * The work explanation is made in full sentences and will incorporate the
+     * values for making the line. It also demonstrates the calculations and
      * substitutions.
      *
-     * @return string of explination of how to solve for the linear line. The
+     * @return string of explanation of how to solve for the linear line. The
      *         equation in normal form is included
      */
     public String lineForNormalWithWork() {

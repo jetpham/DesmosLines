@@ -1,7 +1,5 @@
 package src;
 
-import java.lang.Math;
-
 public class BezierCurve {
     private double[] controlPoint1 = {};
     private double[] controlPoint2 = {};
