@@ -49,10 +49,10 @@ public class BezierCurve {
         String returnedLine = "";
         returnedLine = "((1 - t)((1 - t)((1 - t)" + controlPoint1[0] + " + t" + controlPoint2[0] + ") + t((1 - t)"
                 + controlPoint2[0] + " + t" + controlPoint3[0] + ")) + t((1 - t)((1 - t)" + controlPoint2[0] + " + t"
-                + controlPoint3[0] + ") + t((1 - t)" + controlPoint3[0] + " + t" + controlPoint4[0] + ")), (1 - t)((1 - t)((1 - t)"
-                + controlPoint1[1] + " + t" + controlPoint2[1] + ") + t((1 - t)" + controlPoint2[1] + " + t" + controlPoint3[1]
-                + ")) + t((1 - t)((1 - t)" + controlPoint2[1] + " + t" + controlPoint3[1] + ") + t((1 - t)" + controlPoint3[1]
-                + " + t" + controlPoint4[1] + ")))";
+                + controlPoint3[0] + ") + t((1 - t)" + controlPoint3[0] + " + t" + controlPoint4[0]
+                + ")), (1 - t)((1 - t)((1 - t)" + controlPoint1[1] + " + t" + controlPoint2[1] + ") + t((1 - t)"
+                + controlPoint2[1] + " + t" + controlPoint3[1] + ")) + t((1 - t)((1 - t)" + controlPoint2[1] + " + t"
+                + controlPoint3[1] + ") + t((1 - t)" + controlPoint3[1] + " + t" + controlPoint4[1] + ")))";
         return returnedLine;
     }
 }
