@@ -14,6 +14,7 @@ public class QuadraticLine {
     private double k = 0; // the y intercept for 'y =' functions & x values for 'x =' functions
     private boolean isLinear = false;
     private boolean useDomain = true;
+    private boolean vertexFlip = false;
     private LinearLine linearLine;
 
     /**
@@ -31,6 +32,7 @@ public class QuadraticLine {
             // calculating slope using the (y - k)/(x - h) formula
             a = Math.round(Math.pow(10, 17) * ((newPoint[1] - k) / Math.pow((newPoint[0] - h), 2))) / Math.pow(10, 17);
         } else {
+            vertexFlip = true;
             h = newPoint[0];
             k = newPoint[1];
             // calculating slope using the (y - k)/(x - h) formula
@@ -56,6 +58,11 @@ public class QuadraticLine {
             } else {
                 range[0] = oldPoint[1];
                 range[1] = newPoint[1];
+            }
+            if (vertexFlip) {
+                domain[0] = newPoint[0];
+            } else {
+                domain[0] = oldPoint[0];
             }
         }
     }
@@ -90,7 +97,8 @@ public class QuadraticLine {
             if (useDomain) {
                 returnedLine += " \\left\\{" + domain[0] + "\\le x\\le" + domain[1] + "\\right\\}";
             } else {
-                returnedLine += " \\left\\{" + range[0] + "\\le y\\le" + range[1] + "\\right\\}";
+                returnedLine += " \\left\\{" + range[0] + "\\le y\\le" + range[1] + "\\right\\} \\left\\{" + domain[0]
+                        + "\\le x\\right\\}";
             }
         }
         return returnedLine;
