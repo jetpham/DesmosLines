@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import src.lines.QuadraticLine;
+import src.lines.CubicLine;
 
 public class Main {
     public static double[][] getPointTable() {
@@ -14,8 +14,8 @@ public class Main {
         ArrayList<double[]> points = new ArrayList<double[]>();
         double[][] pointsArray = { {} };
         try {
-            text = new String(Files.readAllBytes(
-                    Paths.get("C:\\Users\\Jet Pham\\Documents\\repos\\DesmosLines\\src\\main\\resources\\points.txt")));
+            text = new String(Files.readAllBytes(Paths
+                    .get("C:\\Users\\Jet-Laptop\\Documents\\Repos\\DesmosLines\\src\\main\\resources\\points.txt")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -28,29 +28,29 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        ArrayList<QuadraticLine> lines = new ArrayList<QuadraticLine>();
+        ArrayList<CubicLine> lines = new ArrayList<CubicLine>();
         boolean firstPoint = true;
-        QuadraticLine[] linesArray = {};
+        CubicLine[] linesArray = {};
         double[] oldPoint = {};
 
         for (double[] i : getPointTable()) {
             double[] newPoint = { i[0], i[1] };
             if (!firstPoint) {
-                lines.add(new QuadraticLine(oldPoint, newPoint));
+                lines.add(new CubicLine(oldPoint, newPoint));
             }
             firstPoint = false;
             oldPoint = newPoint;
         }
         linesArray = lines.toArray(linesArray);
         String essay = "";
-        int index = 1;
-        for (QuadraticLine i : linesArray) {
+        // int index = 1;
+        for (CubicLine i : linesArray) {
             essay = essay + i.lineForDesmos() + "\n";
-            index++;
+            // index++;
         }
         try {
             FileWriter myWriter = new FileWriter(
-                    "C:\\Users\\Jet Pham\\Documents\\repos\\DesmosLines\\src\\main\\resources\\output.txt");
+                    "C:\\Users\\Jet-Laptop\\Documents\\Repos\\DesmosLines\\src\\main\\resources\\output.txt");
             myWriter.write(essay);
             myWriter.close();
             System.out.println("Successfully wrote to the file.");

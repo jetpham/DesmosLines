@@ -2,18 +2,16 @@ package src.lines;
 
 import java.lang.Math;
 
-public class QuadraticLine {
+public class RootLine {
     /*
      * TODO: finish the quadratic line equations and then format the lines for
      * normal and lines for desmos methods.
      */
     private double[] domain = { 0, 0 }; // domain for functions that follow 'y ='
-    private double[] range = { 0, 0 }; // domain for functions that follow 'y ='
     private double a = 0; // the slope for diagonal lines
     private double h = 0;
     private double k = 0; // the y intercept for 'y =' functions & x values for 'x =' functions
     private boolean isLinear = false;
-    private boolean useDomain = true;
     private LinearLine linearLine;
 
     /**
@@ -21,41 +19,22 @@ public class QuadraticLine {
      * @param oldPoint This point is the vertex of the quadratic
      * @param newPoint This point is a points that the quadratic will intersect with
      */
-    public QuadraticLine(double[] oldPoint, double[] newPoint) {
+    public RootLine(double[] oldPoint, double[] newPoint) {
         if (oldPoint[1] == newPoint[1] || oldPoint[0] == newPoint[0]) {
             linearLine = new LinearLine(oldPoint, newPoint);
             isLinear = true;
-        } else if (oldPoint[0] < newPoint[0]) {
+        } else {
             h = oldPoint[0];
             k = oldPoint[1];
-            // calculating slope using the (y - k)/(x - h) formula
-            a = Math.round(Math.pow(10, 17) * ((newPoint[1] - k) / Math.pow((newPoint[0] - h), 2))) / Math.pow(10, 17);
-        } else {
-            h = newPoint[0];
-            k = newPoint[1];
-            // calculating slope using the (y - k)/(x - h) formula
-            a = Math.round(Math.pow(10, 17) * ((oldPoint[1] - k) / Math.pow((oldPoint[0] - h), 2))) / Math.pow(10, 17);
-        }
-        System.out.println("Math.abs(" + oldPoint[0] + " - " + newPoint[0] + ") >= Math.abs(" + oldPoint[1] + " - "
-                + newPoint[1] + ")");
-        if (Math.abs(oldPoint[0] - newPoint[0]) >= Math.abs(oldPoint[1] - newPoint[1])) {
-            System.out.println("true");
+            // calculating slope using the (y - k)/(x + h) formula
+            a = (newPoint[1] - k) / Math.pow((newPoint[0] + h), 3);
+            // setting domain
             if (oldPoint[0] >= newPoint[0]) {
                 domain[0] = newPoint[0];
                 domain[1] = oldPoint[0];
             } else {
                 domain[0] = oldPoint[0];
                 domain[1] = newPoint[0];
-            }
-        } else {
-            System.out.println("false");
-            useDomain = false;
-            if (oldPoint[1] >= newPoint[1]) {
-                range[0] = newPoint[1];
-                range[1] = oldPoint[1];
-            } else {
-                range[0] = oldPoint[1];
-                range[1] = newPoint[1];
             }
         }
     }
@@ -79,18 +58,17 @@ public class QuadraticLine {
             returnedLine = linearLine.lineForDesmos();
         } else {
             if (h >= 0 && k >= 0) {
-                returnedLine = "y = " + a + "\\left(x - " + h + "\\right)^{2} + " + k;
+                returnedLine = "y = " + a + "//left(x - " + h + "\\right)^{3} + " + k + " \\left{" + domain[0]
+                        + "\\le x\\le" + domain[1] + "\\right}";
             } else if (h >= 0 && k < 0) {
-                returnedLine = "y = " + a + "\\left(x - " + h + "\\right)^{2} - " + Math.abs(k);
+                returnedLine = "y = " + a + "//left(x - " + h + "\\right)^{3} - " + Math.abs(k) + " \\left{" + domain[0]
+                        + "\\le x\\le" + domain[1] + "\\right}";
             } else if (h < 0 && k >= 0) {
-                returnedLine = "y = " + a + "\\left(x + " + Math.abs(h) + "\\right)^{2} + " + k;
+                returnedLine = "y = " + a + "//left(x + " + Math.abs(h) + "\\right)^{3} + " + k + " \\left{" + domain[0]
+                        + "\\le x\\le" + domain[1] + "\\right}";
             } else {
-                returnedLine = "y = " + a + "\\left(x + " + Math.abs(h) + "\\right)^{2} - " + Math.abs(k);
-            }
-            if (useDomain) {
-                returnedLine += " \\left\\{" + domain[0] + "\\le x\\le" + domain[1] + "\\right\\}";
-            } else {
-                returnedLine += " \\left\\{" + range[0] + "\\le y\\le" + range[1] + "\\right\\}";
+                returnedLine = "y = " + a + "//left(x + " + Math.abs(h) + "\\right)^{3} - " + Math.abs(k) + " \\left{"
+                        + domain[0] + "\\le x\\le" + domain[1] + "\\right}";
             }
         }
         return returnedLine;
@@ -111,15 +89,15 @@ public class QuadraticLine {
             returnedLine = linearLine.lineForNormal();
         } else {
             if (h >= 0 && k >= 0) {
-                returnedLine = "y = " + a + "(x - " + h + ")^2 + " + k + " {" + domain[0] + "≤ x ≤" + domain[1] + "}";
+                returnedLine = "y = " + a + "(x - " + h + ")^3 + " + k + " {" + domain[0] + "≤ x ≤" + domain[1] + "}";
             } else if (h >= 0 && k < 0) {
-                returnedLine = "y = " + a + "(x - " + h + ")^2 - " + Math.abs(k) + " {" + domain[0] + "≤ x ≤"
+                returnedLine = "y = " + a + "(x - " + h + ")^3 - " + Math.abs(k) + " {" + domain[0] + "≤ x ≤"
                         + domain[1] + "}";
             } else if (h < 0 && k >= 0) {
-                returnedLine = "y = " + a + "(x + " + Math.abs(h) + ")^2 + " + k + " {" + domain[0] + "≤ x ≤"
+                returnedLine = "y = " + a + "(x + " + Math.abs(h) + ")^3 + " + k + " {" + domain[0] + "≤ x ≤"
                         + domain[1] + "}";
             } else {
-                returnedLine = "y = " + a + "(x + " + Math.abs(h) + ")^2 - " + Math.abs(k) + " {" + domain[0] + "≤ x ≤"
+                returnedLine = "y = " + a + "(x + " + Math.abs(h) + ")^3 - " + Math.abs(k) + " {" + domain[0] + "≤ x ≤"
                         + domain[1] + "}";
             }
         }
