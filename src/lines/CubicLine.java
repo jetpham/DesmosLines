@@ -1,31 +1,31 @@
 package src.lines;
 
-import java.lang.Math;
+import java.math.BigDecimal;
 
 public class CubicLine {
     /*
      * TODO: finish the quadratic line equations and then format the lines for
      * normal and lines for desmos methods.
      */
-    private double[] domain = { 0, 0 }; // domain for functions that follow 'y ='
-    private double[] range = { 0, 0 }; // domain for functions that follow 'y ='
-    private double a = 0; // the slope for diagonal lines
-    private double h = 0;
-    private double k = 0; // the y intercept for 'y =' functions & x values for 'x =' functions
+    private BigDecimal[] domain = { new BigDecimal(0), new BigDecimal(0) }; // domain for functions that follow 'y ='
+    private BigDecimal[] range = { new BigDecimal(0), new BigDecimal(0) }; // domain for functions that follow 'y ='
+    // private BigDecimal a = new BigDecimal(0); // the slope for diagonal lines
+    private BigDecimal h = new BigDecimal(0);
+    private BigDecimal k = new BigDecimal(0); // the y intercept for 'y =' functions & x values for 'x =' functions
     private boolean isLinear = false;
     private boolean useDomain = true;
     private LinearLine linearLine;
-    private double[] oldPoint;
-    private double[] newPoint;
+    private BigDecimal[] oldPoint;
+    private BigDecimal[] newPoint;
     private String fracA = "";
 
-    private double gcd(double a, double b) {
-        return b == 0 ? a : gcd(b, a % b);
+    private BigDecimal gcd(BigDecimal a, BigDecimal b) {
+        return b.compareTo(new BigDecimal(0)) == 0 ? a : gcd(b, a.remainder(b));
     }
 
-    private String asFraction(double a, double b) {
-        double gcd = gcd(a, b);
-        return "\\frac{" + (a) + "}{" + (b) + "}";
+    private String asFraction(BigDecimal a, BigDecimal b) {
+        BigDecimal gcd = gcd(a, b);
+        return "\\frac{" + a.divide(gcd) + "}{" + b.divide(gcd) + "}";
         // \frac{5}{123}
     }
 
@@ -34,24 +34,24 @@ public class CubicLine {
      * @param oldPoint This point is the vertex of the quadratic
      * @param newPoint This point is a points that the quadratic will intersect with
      */
-    public CubicLine(double[] oldPoint, double[] newPoint) {
+    public CubicLine(BigDecimal[] oldPoint, BigDecimal[] newPoint) {
         this.oldPoint = oldPoint;
         this.newPoint = newPoint;
         if (oldPoint[1] == newPoint[1] || oldPoint[0] == newPoint[0]) {
-            linearLine = new LinearLine(oldPoint, newPoint);
+            // linearLine = new LinearLine(oldPoint, newPoint);
             isLinear = true;
         } else {
             h = oldPoint[0];
             k = oldPoint[1];
-            // calculating slope using the (y - k)/(x - h) formula
-            a = (newPoint[1] - oldPoint[1]) / Math.pow((newPoint[0] - oldPoint[0]), 3);
-            fracA = asFraction((newPoint[1] - oldPoint[1]), Math.pow((newPoint[0] - oldPoint[0]), 3));
+            // a =
+            // (newPoint[1].subtract(oldPoint[1])).divide(newPoint[0].subtract(oldPoint[0]).pow(3));
+            fracA = asFraction(newPoint[1].subtract(oldPoint[1]), newPoint[0].subtract(oldPoint[0]).pow(3));
         }
         System.out.println("Math.abs(" + oldPoint[0] + " - " + newPoint[0] + ") >= Math.abs(" + oldPoint[1] + " - "
                 + newPoint[1] + ")");
-        if (Math.abs(oldPoint[0] - newPoint[0]) >= Math.abs(oldPoint[1] - newPoint[1])) {
+        if (oldPoint[0].subtract(newPoint[0]).abs().compareTo(oldPoint[1].subtract(newPoint[1]).abs()) >= 0) {
             System.out.println("true");
-            if (oldPoint[0] >= newPoint[0]) {
+            if (oldPoint[0].compareTo(newPoint[0]) >= 0) {
                 domain[0] = newPoint[0];
                 domain[1] = oldPoint[0];
             } else {
@@ -61,7 +61,7 @@ public class CubicLine {
         } else {
             System.out.println("false");
             useDomain = false;
-            if (oldPoint[1] >= newPoint[1]) {
+            if (oldPoint[1].compareTo(newPoint[1]) >= 0) {
                 range[0] = newPoint[1];
                 range[1] = oldPoint[1];
                 domain[0] = oldPoint[0];
@@ -91,18 +91,19 @@ public class CubicLine {
         if (isLinear) {
             returnedLine = linearLine.lineForDesmos();
         } else {
-            if (h >= 0 && k >= 0) {
-                returnedLine = "y = " + fracA + "\\left(x - " + h + "\\right)^{3} + " + k;
-            } else if (h >= 0 && k < 0) {
-                returnedLine = "y = " + fracA + "\\left(x - " + h + "\\right)^{3} - " + Math.abs(k);
-            } else if (h < 0 && k >= 0) {
-                returnedLine = "y = " + fracA + "\\left(x + " + Math.abs(h) + "\\right)^{3} + " + k;
+            if (h.compareTo(new BigDecimal(0)) >= 0 && k.compareTo(new BigDecimal(0)) >= 0) {
+                returnedLine = "y = " + fracA + "\\left(x - " + h.toString() + "\\right)^{3} + " + k.toString();
+            } else if (h.compareTo(new BigDecimal(0)) >= 0 && k.compareTo(new BigDecimal(0)) < 0) {
+                returnedLine = "y = " + fracA + "\\left(x - " + h.toString() + "\\right)^{3} - " + k.abs().toString();
+            } else if (h.compareTo(new BigDecimal(0)) < 0 && k.compareTo(new BigDecimal(0)) >= 0) {
+                returnedLine = "y = " + fracA + "\\left(x + " + h.abs().toString() + "\\right)^{3} + " + k.toString();
             } else {
-                returnedLine = "y = " + fracA + "\\left(x + " + Math.abs(h) + "\\right)^{3} - " + Math.abs(k);
+                returnedLine = "y = " + fracA + "\\left(x + " + h.abs().toString() + "\\right)^{3} - "
+                        + k.abs().toString();
             }
             if (useDomain) {
                 returnedLine += " \\left\\{" + domain[0] + "\\le x\\le" + domain[1] + "\\right\\}";
-            } else if (oldPoint[0] < newPoint[0]) {
+            } else if (oldPoint[0].compareTo(newPoint[0]) < 0) {
                 returnedLine += " \\left\\{" + range[0] + "\\le y\\le" + range[1] + "\\right\\} \\left\\{" + domain[0]
                         + "\\le x\\right\\}";
             } else {
@@ -122,26 +123,30 @@ public class CubicLine {
      *
      * @return string of the line formatted using normal format
      */
-    public String lineForNormal() {
-        String returnedLine = "";
-        if (isLinear) {
-            returnedLine = linearLine.lineForNormal();
-        } else {
-            if (h >= 0 && k >= 0) {
-                returnedLine = "y = " + a + "(x - " + h + ")^3 + " + k + " {" + domain[0] + "≤ x ≤" + domain[1] + "}";
-            } else if (h >= 0 && k < 0) {
-                returnedLine = "y = " + a + "(x - " + h + ")^3 - " + Math.abs(k) + " {" + domain[0] + "≤ x ≤"
-                        + domain[1] + "}";
-            } else if (h < 0 && k >= 0) {
-                returnedLine = "y = " + a + "(x + " + Math.abs(h) + ")^3 + " + k + " {" + domain[0] + "≤ x ≤"
-                        + domain[1] + "}";
-            } else {
-                returnedLine = "y = " + a + "(x + " + Math.abs(h) + ")^3 - " + Math.abs(k) + " {" + domain[0] + "≤ x ≤"
-                        + domain[1] + "}";
-            }
-        }
-        return returnedLine;
-    }
+    // public String lineForNormal() {
+    // String returnedLine = "";
+    // if (isLinear) {
+    // returnedLine = linearLine.lineForNormal();
+    // } else {
+    // if (h >= 0 && k >= 0) {
+    // returnedLine = "y = " + a + "(x - " + h + ")^3 + " + k + " {" + domain[0] +
+    // "≤ x ≤" + domain[1] + "}";
+    // } else if (h >= 0 && k < 0) {
+    // returnedLine = "y = " + a + "(x - " + h + ")^3 - " + Math.abs(k) + " {" +
+    // domain[0] + "≤ x ≤"
+    // + domain[1] + "}";
+    // } else if (h < 0 && k >= 0) {
+    // returnedLine = "y = " + a + "(x + " + Math.abs(h) + ")^3 + " + k + " {" +
+    // domain[0] + "≤ x ≤"
+    // + domain[1] + "}";
+    // } else {
+    // returnedLine = "y = " + a + "(x + " + Math.abs(h) + ")^3 - " + Math.abs(k) +
+    // " {" + domain[0] + "≤ x ≤"
+    // + domain[1] + "}";
+    // }
+    // }
+    // return returnedLine;
+    // }
 
     /**
      * use the line type to determine which of the three different type os lines to

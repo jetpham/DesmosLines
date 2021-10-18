@@ -5,14 +5,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.math.BigDecimal;
 
 import src.lines.CubicLine;
 
 public class Main {
-    public static double[][] getPointTable() {
+    public static BigDecimal[][] getPointTable() {
         String text = "";
-        ArrayList<double[]> points = new ArrayList<double[]>();
-        double[][] pointsArray = { {} };
+        ArrayList<BigDecimal[]> points = new ArrayList<BigDecimal[]>();
+        BigDecimal[][] pointsArray = { {} };
         try {
             text = new String(Files.readAllBytes(Paths
                     .get("C:\\Users\\Jet-Laptop\\Documents\\Repos\\DesmosLines\\src\\main\\resources\\points.txt")));
@@ -20,7 +21,9 @@ public class Main {
             e.printStackTrace();
         }
         for (String i : text.split("\n")) {
-            double[] point = { Double.parseDouble(i.split("\t")[0]), Double.parseDouble(i.split("\t")[1]) };
+            System.out.println(i.split("\t")[0]);
+            System.out.println(i.split("\t")[1]);
+            BigDecimal[] point = { new BigDecimal(i.split("\t")[0]), new BigDecimal(i.split("\t")[1]) };
             points.add(point);
         }
         pointsArray = points.toArray(pointsArray);
@@ -31,10 +34,10 @@ public class Main {
         ArrayList<CubicLine> lines = new ArrayList<CubicLine>();
         boolean firstPoint = true;
         CubicLine[] linesArray = {};
-        double[] oldPoint = {};
+        BigDecimal[] oldPoint = {};
 
-        for (double[] i : getPointTable()) {
-            double[] newPoint = { i[0], i[1] };
+        for (BigDecimal[] i : getPointTable()) {
+            BigDecimal[] newPoint = { i[0], i[1] };
             if (!firstPoint) {
                 lines.add(new CubicLine(oldPoint, newPoint));
             }
