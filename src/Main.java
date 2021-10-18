@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.math.BigDecimal;
 
-import src.lines.CubicLine;
+import src.lines.*;
 
 public class Main {
     public static BigDecimal[][] getPointTable() {
@@ -21,8 +21,8 @@ public class Main {
             e.printStackTrace();
         }
         for (String i : text.split("\n")) {
-            System.out.println(i.split("\t")[0]);
-            System.out.println(i.split("\t")[1]);
+            // System.out.println(i.split("\t")[0]);
+            // System.out.println(i.split("\t")[1]);
             BigDecimal[] point = { new BigDecimal(String.valueOf(Double.parseDouble(i.split("\t")[0]))),
                     new BigDecimal(String.valueOf(Double.parseDouble(i.split("\t")[1]))) };
             points.add(point);
@@ -32,15 +32,15 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        ArrayList<CubicLine> lines = new ArrayList<CubicLine>();
+        ArrayList<LinearLine> lines = new ArrayList<LinearLine>();
         boolean firstPoint = true;
-        CubicLine[] linesArray = {};
+        LinearLine[] linesArray = {};
         BigDecimal[] oldPoint = {};
 
         for (BigDecimal[] i : getPointTable()) {
             BigDecimal[] newPoint = { i[0], i[1] };
             if (!firstPoint) {
-                lines.add(new CubicLine(oldPoint, newPoint));
+                lines.add(new LinearLine(oldPoint, newPoint));
             }
             firstPoint = false;
             oldPoint = newPoint;
@@ -48,7 +48,7 @@ public class Main {
         linesArray = lines.toArray(linesArray);
         String essay = "";
         // int index = 1;
-        for (CubicLine i : linesArray) {
+        for (LinearLine i : linesArray) {
             essay = essay + i.lineForDesmos() + "\n";
             // index++;
         }
