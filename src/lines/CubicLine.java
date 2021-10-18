@@ -25,7 +25,7 @@ public class CubicLine {
 
     private String asFraction(BigDecimal a, BigDecimal b) {
         BigDecimal gcd = gcd(a, b);
-        return "\\frac{" + a.divide(gcd) + "}{" + b.divide(gcd) + "}";
+        return "\\frac{" + a.divide(gcd).toPlainString() + "}{" + b.divide(gcd).toPlainString() + "}";
         // \frac{5}{123}
     }
 
@@ -92,14 +92,14 @@ public class CubicLine {
             returnedLine = linearLine.lineForDesmos();
         } else {
             if (h.compareTo(new BigDecimal(0)) >= 0 && k.compareTo(new BigDecimal(0)) >= 0) {
-                returnedLine = "y = " + fracA + "\\left(x - " + h.toString() + "\\right)^{3} + " + k.toString();
+                returnedLine = "y = " + fracA + "\\left(x - " + h.toPlainString() + "\\right)^{3} + " + k.toPlainString();
             } else if (h.compareTo(new BigDecimal(0)) >= 0 && k.compareTo(new BigDecimal(0)) < 0) {
-                returnedLine = "y = " + fracA + "\\left(x - " + h.toString() + "\\right)^{3} - " + k.abs().toString();
+                returnedLine = "y = " + fracA + "\\left(x - " + h.toPlainString() + "\\right)^{3} - " + k.abs().toPlainString();
             } else if (h.compareTo(new BigDecimal(0)) < 0 && k.compareTo(new BigDecimal(0)) >= 0) {
-                returnedLine = "y = " + fracA + "\\left(x + " + h.abs().toString() + "\\right)^{3} + " + k.toString();
+                returnedLine = "y = " + fracA + "\\left(x + " + h.abs().toPlainString() + "\\right)^{3} + " + k.toPlainString();
             } else {
-                returnedLine = "y = " + fracA + "\\left(x + " + h.abs().toString() + "\\right)^{3} - "
-                        + k.abs().toString();
+                returnedLine = "y = " + fracA + "\\left(x + " + h.abs().toPlainString() + "\\right)^{3} - "
+                        + k.abs().toPlainString();
             }
             if (useDomain) {
                 returnedLine += " \\left\\{" + domain[0] + "\\le x\\le" + domain[1] + "\\right\\}";

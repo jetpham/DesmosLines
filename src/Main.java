@@ -23,7 +23,8 @@ public class Main {
         for (String i : text.split("\n")) {
             System.out.println(i.split("\t")[0]);
             System.out.println(i.split("\t")[1]);
-            BigDecimal[] point = { new BigDecimal(i.split("\t")[0]), new BigDecimal(i.split("\t")[1]) };
+            BigDecimal[] point = { new BigDecimal(String.valueOf(Double.parseDouble(i.split("\t")[0]))),
+                    new BigDecimal(String.valueOf(Double.parseDouble(i.split("\t")[1]))) };
             points.add(point);
         }
         pointsArray = points.toArray(pointsArray);
