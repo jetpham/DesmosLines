@@ -8,11 +8,26 @@ public class CubicLine {
      * normal and lines for desmos methods.
      */
     private double[] domain = { 0, 0 }; // domain for functions that follow 'y ='
+    private double[] range = { 0, 0 }; // domain for functions that follow 'y ='
     private double a = 0; // the slope for diagonal lines
     private double h = 0;
     private double k = 0; // the y intercept for 'y =' functions & x values for 'x =' functions
     private boolean isLinear = false;
+    private boolean useDomain = true;
     private LinearLine linearLine;
+    private double[] oldPoint;
+    private double[] newPoint;
+    private String fracA = "";
+
+    private double gcd(double a, double b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
+
+    private String asFraction(double a, double b) {
+        double gcd = gcd(a, b);
+        return "\\frac{" + (a) + "}{" + (b) + "}";
+        // \frac{5}{123}
+    }
 
     /**
      *
@@ -20,6 +35,8 @@ public class CubicLine {
      * @param newPoint This point is a points that the quadratic will intersect with
      */
     public CubicLine(double[] oldPoint, double[] newPoint) {
+        this.oldPoint = oldPoint;
+        this.newPoint = newPoint;
         if (oldPoint[1] == newPoint[1] || oldPoint[0] == newPoint[0]) {
             linearLine = new LinearLine(oldPoint, newPoint);
             isLinear = true;
@@ -27,14 +44,31 @@ public class CubicLine {
             h = oldPoint[0];
             k = oldPoint[1];
             // calculating slope using the (y - k)/(x - h) formula
-            a = Math.round(Math.pow(10, 17) * ((newPoint[1] - k) / Math.pow((newPoint[0] - h), 3))) / Math.pow(10, 17);
-            // setting domain
+            a = (newPoint[1] - oldPoint[1]) / Math.pow((newPoint[0] - oldPoint[0]), 3);
+            fracA = asFraction((newPoint[1] - oldPoint[1]), Math.pow((newPoint[0] - oldPoint[0]), 3));
+        }
+        System.out.println("Math.abs(" + oldPoint[0] + " - " + newPoint[0] + ") >= Math.abs(" + oldPoint[1] + " - "
+                + newPoint[1] + ")");
+        if (Math.abs(oldPoint[0] - newPoint[0]) >= Math.abs(oldPoint[1] - newPoint[1])) {
+            System.out.println("true");
             if (oldPoint[0] >= newPoint[0]) {
                 domain[0] = newPoint[0];
                 domain[1] = oldPoint[0];
             } else {
                 domain[0] = oldPoint[0];
                 domain[1] = newPoint[0];
+            }
+        } else {
+            System.out.println("false");
+            useDomain = false;
+            if (oldPoint[1] >= newPoint[1]) {
+                range[0] = newPoint[1];
+                range[1] = oldPoint[1];
+                domain[0] = oldPoint[0];
+            } else {
+                range[0] = oldPoint[1];
+                range[1] = newPoint[1];
+                domain[0] = oldPoint[0];
             }
         }
     }
@@ -58,17 +92,22 @@ public class CubicLine {
             returnedLine = linearLine.lineForDesmos();
         } else {
             if (h >= 0 && k >= 0) {
-                returnedLine = "y = " + a + "\\left(x - " + h + "\\right)^{3} + " + k + " \\left\\{" + domain[0]
-                        + "\\le x\\le" + domain[1] + "\\right\\}";
+                returnedLine = "y = " + fracA + "\\left(x - " + h + "\\right)^{3} + " + k;
             } else if (h >= 0 && k < 0) {
-                returnedLine = "y = " + a + "\\left(x - " + h + "\\right)^{3} - " + Math.abs(k) + " \\left\\{"
-                        + domain[0] + "\\le x\\le" + domain[1] + "\\right\\}";
+                returnedLine = "y = " + fracA + "\\left(x - " + h + "\\right)^{3} - " + Math.abs(k);
             } else if (h < 0 && k >= 0) {
-                returnedLine = "y = " + a + "\\left(x + " + Math.abs(h) + "\\right)^{3} + " + k + " \\left\\{"
-                        + domain[0] + "\\le x\\le" + domain[1] + "\\right\\}";
+                returnedLine = "y = " + fracA + "\\left(x + " + Math.abs(h) + "\\right)^{3} + " + k;
             } else {
-                returnedLine = "y = " + a + "\\left(x + " + Math.abs(h) + "\\right)^{3} - " + Math.abs(k) + " \\left\\{"
-                        + domain[0] + "\\le x\\le" + domain[1] + "\\right\\}";
+                returnedLine = "y = " + fracA + "\\left(x + " + Math.abs(h) + "\\right)^{3} - " + Math.abs(k);
+            }
+            if (useDomain) {
+                returnedLine += " \\left\\{" + domain[0] + "\\le x\\le" + domain[1] + "\\right\\}";
+            } else if (oldPoint[0] < newPoint[0]) {
+                returnedLine += " \\left\\{" + range[0] + "\\le y\\le" + range[1] + "\\right\\} \\left\\{" + domain[0]
+                        + "\\le x\\right\\}";
+            } else {
+                returnedLine += " \\left\\{" + range[0] + "\\le y\\le" + range[1] + "\\right\\} \\left\\{" + domain[0]
+                        + "\\ge x\\right\\}";
             }
         }
         return returnedLine;
