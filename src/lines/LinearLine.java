@@ -58,8 +58,12 @@ public class LinearLine {
             lineType = 2;
             // calculating slope using the (y1-y2)/(x1-x2) formula
             fracM = asFraction(oldPoint[1].subtract(newPoint[1]), (oldPoint[0].subtract(newPoint[0])));
-            // calculating yInt using the b = y - (m * x) formula
-            fracB = asFraction(newPoint[1].negate(), oldPoint[0].subtract(newPoint[0]).multiply(oldPoint[0]));
+            // m =
+            // oldPoint[1].subtract(newPoint[1]).divide(oldPoint[0].subtract(newPoint[0]));
+            // calculating yInt using the b = y - ((y1-y2)/(x1-x2) * x) formula
+            // (yx^2-yxw-y+z)/((x-w)x)
+            fracB = asFraction((oldPoint[1].negate().multiply(newPoint[0])).add(oldPoint[0].multiply(newPoint[1])),
+                    oldPoint[0].subtract(newPoint[0]));
             // posB = (newPoint[1].negate().compareTo(new BigDecimal(0)) >= 0)
             // ^ (oldPoint[0].subtract(newPoint[0]).multiply(oldPoint[0]).compareTo(new
             // BigDecimal(0)) >= 0);
