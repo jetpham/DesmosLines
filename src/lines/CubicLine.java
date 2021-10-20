@@ -2,49 +2,32 @@ package src.lines;
 
 import java.math.BigDecimal;
 
-public class CubicLine {
-    /*
-     * TODO: finish the quadratic line equations and then format the lines for
-     * normal and lines for desmos methods.
-     */
-    private BigDecimal[] domain = { new BigDecimal(0), new BigDecimal(0) }; // domain for functions that follow 'y ='
-    private BigDecimal[] range = { new BigDecimal(0), new BigDecimal(0) }; // domain for functions that follow 'y ='
+public class CubicLine extends SuperLine {
+    private final BigDecimal[] domain = {new BigDecimal(0), new BigDecimal(0)}; // domain for functions that follow 'y ='
+    private final BigDecimal[] range = {new BigDecimal(0), new BigDecimal(0)}; // domain for functions that follow 'y ='
+    private final BigDecimal[] oldPoint;
+    private final BigDecimal[] newPoint;
     // private BigDecimal a = new BigDecimal(0); // the slope for diagonal lines
     private BigDecimal h = new BigDecimal(0);
     private BigDecimal k = new BigDecimal(0); // the y intercept for 'y =' functions & x values for 'x =' functions
     private boolean isLinear = false;
     private boolean useDomain = true;
     private LinearLine linearLine;
-    private BigDecimal[] oldPoint;
-    private BigDecimal[] newPoint;
     private String fracA = "";
 
-    private BigDecimal gcd(BigDecimal a, BigDecimal b) {
-        return b.compareTo(new BigDecimal(0)) == 0 ? a : gcd(b, a.remainder(b));
-    }
-
-    private String asFraction(BigDecimal a, BigDecimal b) {
-        BigDecimal gcd = gcd(a, b);
-        return "\\frac{" + a.divide(gcd).toPlainString() + "}{" + b.divide(gcd).toPlainString() + "}";
-        // \frac{5}{123}
-    }
-
     /**
-     *
      * @param oldPoint This point is the vertex of the quadratic
      * @param newPoint This point is a points that the quadratic will intersect with
      */
     public CubicLine(BigDecimal[] oldPoint, BigDecimal[] newPoint) {
         this.oldPoint = oldPoint;
         this.newPoint = newPoint;
-        if (oldPoint[1] == newPoint[1] || oldPoint[0] == newPoint[0]) {
-            // linearLine = new LinearLine(oldPoint, newPoint);
+        if (oldPoint[1].equals(newPoint[1]) || oldPoint[0].equals(newPoint[0])) {
+            linearLine = new LinearLine(oldPoint, newPoint);
             isLinear = true;
         } else {
             h = oldPoint[0];
             k = oldPoint[1];
-            // a =
-            // (newPoint[1].subtract(oldPoint[1])).divide(newPoint[0].subtract(oldPoint[0]).pow(3));
             fracA = asFraction(newPoint[1].subtract(oldPoint[1]), newPoint[0].subtract(oldPoint[0]).pow(3));
         }
         System.out.println("Math.abs(" + oldPoint[0] + " - " + newPoint[0] + ") >= Math.abs(" + oldPoint[1] + " - "
@@ -64,13 +47,22 @@ public class CubicLine {
             if (oldPoint[1].compareTo(newPoint[1]) >= 0) {
                 range[0] = newPoint[1];
                 range[1] = oldPoint[1];
-                domain[0] = oldPoint[0];
             } else {
                 range[0] = oldPoint[1];
                 range[1] = newPoint[1];
-                domain[0] = oldPoint[0];
             }
+            domain[0] = oldPoint[0];
         }
+    }
+
+    private BigDecimal gcd(BigDecimal a, BigDecimal b) {
+        return b.compareTo(new BigDecimal(0)) == 0 ? a : gcd(b, a.remainder(b));
+    }
+
+    private String asFraction(BigDecimal a, BigDecimal b) {
+        BigDecimal gcd = gcd(a, b);
+        return "\\frac{" + a.divide(gcd).toPlainString() + "}{" + b.divide(gcd).toPlainString() + "}";
+        // \frac{5}{123}
     }
 
     /**
@@ -84,19 +76,22 @@ public class CubicLine {
      * characters to be formatted into desmos correctly
      *
      * @return string of the line formatted to be pasted into the desmos expression
-     *         lines.
+     * lines.
      */
     public String lineForDesmos() {
-        String returnedLine = "";
+        String returnedLine;
         if (isLinear) {
             returnedLine = linearLine.lineForDesmos();
         } else {
             if (h.compareTo(new BigDecimal(0)) >= 0 && k.compareTo(new BigDecimal(0)) >= 0) {
-                returnedLine = "y = " + fracA + "\\left(x - " + h.toPlainString() + "\\right)^{3} + " + k.toPlainString();
+                returnedLine = "y = " + fracA + "\\left(x - " + h.toPlainString() + "\\right)^{3} + "
+                        + k.toPlainString();
             } else if (h.compareTo(new BigDecimal(0)) >= 0 && k.compareTo(new BigDecimal(0)) < 0) {
-                returnedLine = "y = " + fracA + "\\left(x - " + h.toPlainString() + "\\right)^{3} - " + k.abs().toPlainString();
+                returnedLine = "y = " + fracA + "\\left(x - " + h.toPlainString() + "\\right)^{3} - "
+                        + k.abs().toPlainString();
             } else if (h.compareTo(new BigDecimal(0)) < 0 && k.compareTo(new BigDecimal(0)) >= 0) {
-                returnedLine = "y = " + fracA + "\\left(x + " + h.abs().toPlainString() + "\\right)^{3} + " + k.toPlainString();
+                returnedLine = "y = " + fracA + "\\left(x + " + h.abs().toPlainString() + "\\right)^{3} + "
+                        + k.toPlainString();
             } else {
                 returnedLine = "y = " + fracA + "\\left(x + " + h.abs().toPlainString() + "\\right)^{3} - "
                         + k.abs().toPlainString();
@@ -114,52 +109,18 @@ public class CubicLine {
         return returnedLine;
     }
 
-    /**
-     * use the line type to determine which of the three different type os lines to
-     * output. There are horizontal lines, 'x = b' There are vertical lines, 'y = b'
-     * There are diagonal lines, 'y = mx + b' These lines all come with domain or
-     * range, whichever is appropriate for the type of line. Diagonal lines will
-     * always use domain rather than range.
-     *
-     * @return string of the line formatted using normal format
-     */
-    // public String lineForNormal() {
-    // String returnedLine = "";
-    // if (isLinear) {
-    // returnedLine = linearLine.lineForNormal();
-    // } else {
-    // if (h >= 0 && k >= 0) {
-    // returnedLine = "y = " + a + "(x - " + h + ")^3 + " + k + " {" + domain[0] +
-    // "≤ x ≤" + domain[1] + "}";
-    // } else if (h >= 0 && k < 0) {
-    // returnedLine = "y = " + a + "(x - " + h + ")^3 - " + Math.abs(k) + " {" +
-    // domain[0] + "≤ x ≤"
-    // + domain[1] + "}";
-    // } else if (h < 0 && k >= 0) {
-    // returnedLine = "y = " + a + "(x + " + Math.abs(h) + ")^3 + " + k + " {" +
-    // domain[0] + "≤ x ≤"
-    // + domain[1] + "}";
-    // } else {
-    // returnedLine = "y = " + a + "(x + " + Math.abs(h) + ")^3 - " + Math.abs(k) +
-    // " {" + domain[0] + "≤ x ≤"
-    // + domain[1] + "}";
-    // }
-    // }
-    // return returnedLine;
-    // }
+    /*
+      use the line type to determine which of the three different type os lines to
+      output. There are horizontal lines, 'x = b' There are vertical lines, 'y = b'
+      There are diagonal lines, 'y = mx + b' These lines all come with domain or
+      range, whichever is appropriate for the type of line. Diagonal lines will
+      always use domain rather than range.
+      <p>
+      The work explanation is made in full sentences and will incorporate the
+      values for making the line. It also demonstrates the calculations and
+      substitutions.
 
-    /**
-     * use the line type to determine which of the three different type os lines to
-     * output. There are horizontal lines, 'x = b' There are vertical lines, 'y = b'
-     * There are diagonal lines, 'y = mx + b' These lines all come with domain or
-     * range, whichever is appropriate for the type of line. Diagonal lines will
-     * always use domain rather than range.
-     * <p>
-     * The work explanation is made in full sentences and will incorporate the
-     * values for making the line. It also demonstrates the calculations and
-     * substitutions.
-     *
-     * @return string of explanation of how to solve for the linear line. The
+      @return string of explanation of how to solve for the linear line. The
      *         equation in normal form is included
      */
     // public String lineForNormalWithWork() {

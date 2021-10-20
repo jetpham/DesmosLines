@@ -1,19 +1,22 @@
 package src;
 
+import src.lines.CubicLine;
+import src.lines.LinearLine;
+import src.lines.QuadraticLine;
+import src.lines.SuperLine;
+
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.math.BigDecimal;
-
-import src.lines.*;
 
 public class Main {
     public static BigDecimal[][] getPointTable() {
         String text = "";
-        ArrayList<BigDecimal[]> points = new ArrayList<BigDecimal[]>();
-        BigDecimal[][] pointsArray = { {} };
+        ArrayList<BigDecimal[]> points = new ArrayList<>();
+        BigDecimal[][] pointsArray = {{}};
         try {
             text = new String(Files.readAllBytes(Paths
                     .get("C:\\Users\\Jet-Laptop\\Documents\\Repos\\DesmosLines\\src\\main\\resources\\points.txt")));
@@ -21,41 +24,49 @@ public class Main {
             e.printStackTrace();
         }
         for (String i : text.split("\n")) {
-            // System.out.println(i.split("\t")[0]);
-            // System.out.println(i.split("\t")[1]);
-            BigDecimal[] point = { new BigDecimal(String.valueOf(Double.parseDouble(i.split("\t")[0]))),
-                    new BigDecimal(String.valueOf(Double.parseDouble(i.split("\t")[1]))) };
+            BigDecimal[] point = {new BigDecimal(String.valueOf(Double.parseDouble(i.split("\t")[0]))),
+                    new BigDecimal(String.valueOf(Double.parseDouble(i.split("\t")[1])))};
             points.add(point);
         }
         pointsArray = points.toArray(pointsArray);
         return pointsArray;
     }
 
+    public static SuperLine RandomLine(BigDecimal[] oldPoint, BigDecimal[] newPoint) {
+        double seed = Math.random() * 3;
+        if (seed > 2) {
+            return new LinearLine(oldPoint, newPoint);
+        } else if (seed < 1) {
+            return new CubicLine(oldPoint, newPoint);
+        } else {
+            return new QuadraticLine(oldPoint, newPoint);
+        }
+    }
+
     public static void main(String[] args) {
-        ArrayList<LinearLine> lines = new ArrayList<LinearLine>();
+        ArrayList<SuperLine> lines = new ArrayList<>();
         boolean firstPoint = true;
-        LinearLine[] linesArray = {};
+        SuperLine[] linesArray = {};
         BigDecimal[] oldPoint = {};
 
         for (BigDecimal[] i : getPointTable()) {
-            BigDecimal[] newPoint = { i[0], i[1] };
+            BigDecimal[] newPoint = {i[0], i[1]};
             if (!firstPoint) {
-                lines.add(new LinearLine(oldPoint, newPoint));
+                lines.add(RandomLine(oldPoint, newPoint));
             }
             firstPoint = false;
             oldPoint = newPoint;
         }
         linesArray = lines.toArray(linesArray);
-        String essay = "";
-        // int index = 1;
-        for (LinearLine i : linesArray) {
-            essay = essay + i.lineForDesmos() + "\n";
-            // index++;
+        StringBuilder essay = new StringBuilder();
+        for (SuperLine i : linesArray) {
+            System.out.println(i.getClass());
+            essay.append(i.lineForDesmos()).append("\n");
         }
         try {
             FileWriter myWriter = new FileWriter(
                     "C:\\Users\\Jet-Laptop\\Documents\\Repos\\DesmosLines\\src\\main\\resources\\output.txt");
-            myWriter.write(essay);
+            myWriter.write(essay.toString());
             myWriter.close();
             System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {
