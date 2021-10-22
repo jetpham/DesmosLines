@@ -34,14 +34,13 @@ public class Main {
 
     public static SuperLine RandomLine(BigDecimal[] oldPoint, BigDecimal[] newPoint) {
         double seed = Math.random() * 3;
-        // if (seed > 2) {
-        // return new LinearLine(oldPoint, newPoint);
-        // } else if (seed < 1) {
-        // return new CubicLine(oldPoint, newPoint);
-        // } else {
-        // return new QuadraticLine(oldPoint, newPoint);
-        // }
-        return new QuadraticLine(oldPoint, newPoint);
+        if (seed > 2) {
+            return new LinearLine(oldPoint, newPoint);
+        } else if (seed < 1) {
+            return new CubicLine(oldPoint, newPoint);
+        } else {
+            return new QuadraticLine(oldPoint, newPoint);
+        }
     }
 
     public static void main(String[] args) {
@@ -54,7 +53,6 @@ public class Main {
             BigDecimal[] newPoint = { i[0], i[1] };
             if (!firstPoint) {
                 lines.add(RandomLine(oldPoint, newPoint));
-                lines.add(RandomLine(newPoint, oldPoint));
             }
             firstPoint = false;
             oldPoint = newPoint;
@@ -62,8 +60,11 @@ public class Main {
         linesArray = lines.toArray(linesArray);
         StringBuilder essay = new StringBuilder();
         for (SuperLine i : linesArray) {
-            System.out.println(i.getClass());
+            System.out.println(i.getClass().getSimpleName());
             essay.append(i.lineForDesmos()).append("\n");
+            if (i.getClass().getSimpleName() != "LinearLine") {
+                essay.append(i.mirroredLineForDesmos()).append("\n");
+            }
         }
         try {
             FileWriter myWriter = new FileWriter(

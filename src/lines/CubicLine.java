@@ -3,10 +3,10 @@ package src.lines;
 import java.math.BigDecimal;
 
 public class CubicLine extends SuperLine {
-    private final BigDecimal[] domain = { new BigDecimal(0), new BigDecimal(0) }; // domain for functions that follow 'y
-                                                                                  // ='
-    private final BigDecimal[] range = { new BigDecimal(0), new BigDecimal(0) }; // domain for functions that follow 'y
-                                                                                 // ='
+    private final BigDecimal[] domain = {new BigDecimal(0), new BigDecimal(0)}; // domain for functions that follow 'y
+    // ='
+    private final BigDecimal[] range = {new BigDecimal(0), new BigDecimal(0)}; // domain for functions that follow 'y
+    // ='
     private final BigDecimal[] oldPoint;
     private final BigDecimal[] newPoint;
     // private BigDecimal a = new BigDecimal(0); // the slope for diagonal lines
@@ -78,7 +78,7 @@ public class CubicLine extends SuperLine {
      * characters to be formatted into desmos correctly
      *
      * @return string of the line formatted to be pasted into the desmos expression
-     *         lines.
+     * lines.
      */
     public String lineForDesmos() {
         String returnedLine;
@@ -108,6 +108,12 @@ public class CubicLine extends SuperLine {
                         + "\\ge x\\right\\}";
             }
         }
+        return returnedLine;
+    }
+
+    public String mirroredLineForDesmos() {
+        String returnedLine = "";
+        returnedLine = (new CubicLine(newPoint, oldPoint)).lineForDesmos();
         return returnedLine;
     }
 }
