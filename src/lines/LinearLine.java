@@ -3,8 +3,10 @@ package src.lines;
 import java.math.BigDecimal;
 
 public class LinearLine extends SuperLine {
-    private final BigDecimal[] domain = {new BigDecimal(0), new BigDecimal(0)}; // domain for functions that follow 'y ='
-    private final BigDecimal[] range = {new BigDecimal(0), new BigDecimal(0)}; // range for functions that follow 'x ='
+    private final BigDecimal[] domain = { new BigDecimal(0), new BigDecimal(0) }; // domain for functions that follow 'y
+                                                                                  // ='
+    private final BigDecimal[] range = { new BigDecimal(0), new BigDecimal(0) }; // range for functions that follow 'x
+                                                                                 // ='
     // b' functions
     private final int lineType; // 0: 'y = b', 1: 'x = b', 2: 'y = mx + b'
     private String fracM = ""; // the slope for diagonal lines
@@ -84,30 +86,42 @@ public class LinearLine extends SuperLine {
      * characters to be formatted into desmos correctly
      *
      * @return string of the line formatted to be pasted into the desmos expression
-     * lines.
+     *         lines.
      */
     public String lineForDesmos() {
         String returnedLine = "";
         switch (lineType) {
-            case 0: // 'y = b' equation
-                returnedLine = "y = " + b + "\\left\\{" + domain[0] + "\\le x\\le" + domain[1] + "\\right\\}";
-                break;
-            case 1: // 'x = b' equation
-                returnedLine = "x = " + b + "\\left\\{" + range[0] + "\\le y\\le" + range[1] + "\\right\\}";
-                break;
-            case 2: // 'y = mx + b' equation
-                // if (posB) { // if the y integer is positive. use a + for the mx + b
-                returnedLine = "y = " + fracM + "x + " + fracB + "\\left\\{" + domain[0] + "\\le x\\le" + domain[1]
-                        + "\\right\\}";
-                // } else { // else use a - for mx - b and use abs on b. this is for formatting
-                // purposes
-                // returnedLine = "y = " + fracM + "x - " + b.abs() + "\\left\\{" + domain[0] +
-                // "\\le x\\le"
-                // + domain[1] + "\\right\\}";
-                // }
-                break;
-            default:
-                break;
+        case 0: // 'y = b' equation
+            returnedLine = "y = " + b + "\\left\\{" + domain[0] + "\\le x\\le" + domain[1] + "\\right\\}";
+            break;
+        case 1: // 'x = b' equation
+            returnedLine = "x = " + b + "\\left\\{" + range[0] + "\\le y\\le" + range[1] + "\\right\\}";
+            break;
+        case 2: // 'y = mx + b' equation
+            returnedLine = "y = " + fracM + "x + " + fracB + "\\left\\{" + domain[0] + "\\le x\\le" + domain[1]
+                    + "\\right\\}";
+            break;
+        default:
+            break;
+        }
+        return returnedLine;
+    }
+
+    public String expandedLineForDesmos() {
+        String returnedLine = "";
+        switch (lineType) {
+        case 0: // 'y = b' equation
+            returnedLine = "y = " + b + "\\left\\{" + domain[0] + "\\le x\\le" + domain[1] + "\\right\\}";
+            break;
+        case 1: // 'x = b' equation
+            returnedLine = "x = " + b + "\\left\\{" + range[0] + "\\le y\\le" + range[1] + "\\right\\}";
+            break;
+        case 2: // 'y = mx + b' equation
+            returnedLine = "y = " + fracM + "x + " + fracB + "\\left\\{" + domain[0] + "\\le x\\le" + domain[1]
+                    + "\\right\\}";
+            break;
+        default:
+            break;
         }
         return returnedLine;
     }

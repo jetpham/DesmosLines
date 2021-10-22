@@ -2,7 +2,7 @@ package src.lines;
 
 import java.math.BigDecimal;
 
-public class LinearLine extends SuperLine {
+public class RootLine extends SuperLine {
     private final BigDecimal[] domain = {new BigDecimal(0), new BigDecimal(0)}; // domain for functions that follow 'y ='
     private final BigDecimal[] range = {new BigDecimal(0), new BigDecimal(0)}; // range for functions that follow 'x ='
     // b' functions
@@ -11,7 +11,7 @@ public class LinearLine extends SuperLine {
     private BigDecimal b;
     private String fracB = ""; // the y intercept for 'y =' functions & x values for 'x =' functions
 
-    public LinearLine(BigDecimal[] oldPoint, BigDecimal[] newPoint) {
+    public RootLine(BigDecimal[] oldPoint, BigDecimal[] newPoint) {
         // for storing the original points. used later for the
         // linesForNormalWithWork
         // function

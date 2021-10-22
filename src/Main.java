@@ -16,7 +16,7 @@ public class Main {
     public static BigDecimal[][] getPointTable() {
         String text = "";
         ArrayList<BigDecimal[]> points = new ArrayList<>();
-        BigDecimal[][] pointsArray = {{}};
+        BigDecimal[][] pointsArray = { {} };
         try {
             text = new String(Files.readAllBytes(Paths
                     .get("C:\\Users\\Jet-Laptop\\Documents\\Repos\\DesmosLines\\src\\main\\resources\\points.txt")));
@@ -24,8 +24,8 @@ public class Main {
             e.printStackTrace();
         }
         for (String i : text.split("\n")) {
-            BigDecimal[] point = {new BigDecimal(String.valueOf(Double.parseDouble(i.split("\t")[0]))),
-                    new BigDecimal(String.valueOf(Double.parseDouble(i.split("\t")[1])))};
+            BigDecimal[] point = { new BigDecimal(String.valueOf(Double.parseDouble(i.split("\t")[0]))),
+                    new BigDecimal(String.valueOf(Double.parseDouble(i.split("\t")[1]))) };
             points.add(point);
         }
         pointsArray = points.toArray(pointsArray);
@@ -34,13 +34,14 @@ public class Main {
 
     public static SuperLine RandomLine(BigDecimal[] oldPoint, BigDecimal[] newPoint) {
         double seed = Math.random() * 3;
-        if (seed > 2) {
-            return new LinearLine(oldPoint, newPoint);
-        } else if (seed < 1) {
-            return new CubicLine(oldPoint, newPoint);
-        } else {
-            return new QuadraticLine(oldPoint, newPoint);
-        }
+        // if (seed > 2) {
+        // return new LinearLine(oldPoint, newPoint);
+        // } else if (seed < 1) {
+        // return new CubicLine(oldPoint, newPoint);
+        // } else {
+        // return new QuadraticLine(oldPoint, newPoint);
+        // }
+        return new QuadraticLine(oldPoint, newPoint);
     }
 
     public static void main(String[] args) {
@@ -50,9 +51,10 @@ public class Main {
         BigDecimal[] oldPoint = {};
 
         for (BigDecimal[] i : getPointTable()) {
-            BigDecimal[] newPoint = {i[0], i[1]};
+            BigDecimal[] newPoint = { i[0], i[1] };
             if (!firstPoint) {
                 lines.add(RandomLine(oldPoint, newPoint));
+                lines.add(RandomLine(newPoint, oldPoint));
             }
             firstPoint = false;
             oldPoint = newPoint;
