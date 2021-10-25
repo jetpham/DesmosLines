@@ -9,11 +9,11 @@ public class LinearLine extends SuperLine {
     // ='
     // b' functions
     private final int lineType; // 0: 'y = b', 1: 'x = b', 2: 'y = mx + b'
+    private final BigDecimal[] oldPoint;
+    private final BigDecimal[] newPoint;
     private String fracM = ""; // the slope for diagonal lines
     private BigDecimal b;
     private String fracB = ""; // the y intercept for 'y =' functions & x values for 'x =' functions
-    private final BigDecimal[] oldPoint;
-    private final BigDecimal[] newPoint;
 
     public LinearLine(BigDecimal[] oldPoint, BigDecimal[] newPoint) {
         this.newPoint = newPoint;
