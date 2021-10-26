@@ -3,9 +3,9 @@ package src.lines;
 import java.math.BigDecimal;
 
 public class RootLine extends SuperLine {
-    private final BigDecimal[] domain = {new BigDecimal(0), new BigDecimal(0)}; // domain for functions that follow 'y
+    private final BigDecimal[] domain = { new BigDecimal(0), new BigDecimal(0) }; // domain for functions that follow 'y
     // ='
-    private final BigDecimal[] range = {new BigDecimal(0), new BigDecimal(0)}; // domain for functions that follow 'y
+    private final BigDecimal[] range = { new BigDecimal(0), new BigDecimal(0) }; // domain for functions that follow 'y
     // ='
     private final BigDecimal[] oldPoint;
     private final BigDecimal[] newPoint;
@@ -23,12 +23,17 @@ public class RootLine extends SuperLine {
             linearLine = new LinearLine(oldPoint, newPoint);
             isLinear = true;
         } else {
-            h = oldPoint[0];
-            k = oldPoint[1];
-            fracA = asFraction(newPoint[1].subtract(oldPoint[1]), newPoint[0].subtract(oldPoint[0]).pow(2));
+            if ((newPoint[0].subtract(oldPoint[0])).compareTo(new BigDecimal(0)) >= 0) {
+                fracA = asFraction(newPoint[1].subtract(oldPoint[1]), newPoint[0].subtract(oldPoint[0]));
+                h = oldPoint[0];
+                k = oldPoint[1];
+            } else {
+                fracA = asFraction(oldPoint[1].subtract(newPoint[1]), oldPoint[0].subtract(newPoint[0]));
+                h = newPoint[0];
+                k = newPoint[1];
+            }
         }
         if (oldPoint[0].subtract(newPoint[0]).abs().compareTo(oldPoint[1].subtract(newPoint[1]).abs()) >= 0) {
-            System.out.println("true");
             if (oldPoint[0].compareTo(newPoint[0]) >= 0) {
                 domain[0] = newPoint[0];
                 domain[1] = oldPoint[0];
@@ -37,7 +42,6 @@ public class RootLine extends SuperLine {
                 domain[1] = newPoint[0];
             }
         } else {
-            System.out.println("false");
             useDomain = false;
             if (oldPoint[1].compareTo(newPoint[1]) >= 0) {
                 range[0] = newPoint[1];
@@ -56,7 +60,7 @@ public class RootLine extends SuperLine {
 
     private String asFraction(BigDecimal a, BigDecimal b) {
         BigDecimal gcd = gcd(a, b);
-        return "\\frac{" + a.divide(gcd).toPlainString() + "}{" + b.divide(gcd).toPlainString() + "}";
+        return "\\frac{" + a.divide(gcd).toPlainString() + "\\sqrt{" + b + "}}{" + b.divide(gcd).toPlainString() + "}";
     }
 
     /**
@@ -70,7 +74,7 @@ public class RootLine extends SuperLine {
      * characters to be formatted into desmos correctly
      *
      * @return string of the line formatted to be pasted into the desmos expression
-     * lines.
+     *         lines.
      */
     public String lineForDesmos() {
         String returnedLine;
@@ -78,16 +82,13 @@ public class RootLine extends SuperLine {
             returnedLine = linearLine.lineForDesmos();
         } else {
             if (h.compareTo(new BigDecimal(0)) >= 0 && k.compareTo(new BigDecimal(0)) >= 0) {
-                returnedLine = "y = " + fracA + "\\left(x - " + h.toPlainString() + "\\right)^{2} + "
-                        + k.toPlainString();
+                returnedLine = "y = " + fracA + "\\sqrt{x - " + h.toPlainString() + "} + " + k.toPlainString();
             } else if (h.compareTo(new BigDecimal(0)) >= 0 && k.compareTo(new BigDecimal(0)) < 0) {
-                returnedLine = "y = " + fracA + "\\left(x - " + h.toPlainString() + "\\right)^{2} - "
-                        + k.abs().toPlainString();
+                returnedLine = "y = " + fracA + "\\sqrt{x - " + h.toPlainString() + "} - " + k.abs().toPlainString();
             } else if (h.compareTo(new BigDecimal(0)) < 0 && k.compareTo(new BigDecimal(0)) >= 0) {
-                returnedLine = "y = " + fracA + "\\left(x + " + h.abs().toPlainString() + "\\right)^{2} + "
-                        + k.toPlainString();
+                returnedLine = "y = " + fracA + "\\sqrt{x + " + h.abs().toPlainString() + "} + " + k.toPlainString();
             } else {
-                returnedLine = "y = " + fracA + "\\left(x + " + h.abs().toPlainString() + "\\right)^{2} - "
+                returnedLine = "y = " + fracA + "\\sqrt{x + " + h.abs().toPlainString() + "} - "
                         + k.abs().toPlainString();
             }
             if (useDomain) {
@@ -104,8 +105,8 @@ public class RootLine extends SuperLine {
     }
 
     public String mirroredLineForDesmos() {
-        String returnedLine = "";
-        returnedLine = (new RootLine(newPoint, oldPoint)).lineForDesmos();
+        String returnedLine;
+        returnedLine = (new QuadraticLine(oldPoint, newPoint).lineForDesmos());
         return returnedLine;
     }
 }

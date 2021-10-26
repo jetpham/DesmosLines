@@ -3,9 +3,9 @@ package src.lines;
 import java.math.BigDecimal;
 
 public class QuadraticLine extends SuperLine {
-    private final BigDecimal[] domain = {new BigDecimal(0), new BigDecimal(0)}; // domain for functions that follow 'y
+    private final BigDecimal[] domain = { new BigDecimal(0), new BigDecimal(0) }; // domain for functions that follow 'y
     // ='
-    private final BigDecimal[] range = {new BigDecimal(0), new BigDecimal(0)}; // domain for functions that follow 'y
+    private final BigDecimal[] range = { new BigDecimal(0), new BigDecimal(0) }; // domain for functions that follow 'y
     // ='
     private final BigDecimal[] oldPoint;
     private final BigDecimal[] newPoint;
@@ -15,17 +15,27 @@ public class QuadraticLine extends SuperLine {
     private boolean useDomain = true;
     private LinearLine linearLine;
     private String fracA = "";
+    private boolean lineRightOfVertex;
 
     public QuadraticLine(BigDecimal[] oldPoint, BigDecimal[] newPoint) {
         this.oldPoint = oldPoint;
         this.newPoint = newPoint;
+        BigDecimal otherH = new BigDecimal(0);
         if (oldPoint[1].equals(newPoint[1]) || oldPoint[0].equals(newPoint[0])) {
             linearLine = new LinearLine(oldPoint, newPoint);
             isLinear = true;
-        } else {
+        } else if ((newPoint[0].subtract(oldPoint[0])).compareTo(new BigDecimal(0)) >= 0) {
+            fracA = asFraction(newPoint[1].subtract(oldPoint[1]), newPoint[0].subtract(oldPoint[0]).pow(2));
             h = oldPoint[0];
             k = oldPoint[1];
-            fracA = asFraction(newPoint[1].subtract(oldPoint[1]), newPoint[0].subtract(oldPoint[0]).pow(2));
+            domain[0] = h;
+            otherH = newPoint[0];
+        } else {
+            fracA = asFraction(oldPoint[1].subtract(newPoint[1]), oldPoint[0].subtract(newPoint[0]).pow(2));
+            h = newPoint[0];
+            k = newPoint[1];
+            domain[0] = h;
+            otherH = oldPoint[0];
         }
         if (oldPoint[0].subtract(newPoint[0]).abs().compareTo(oldPoint[1].subtract(newPoint[1]).abs()) >= 0) {
             System.out.println("true");
@@ -46,7 +56,7 @@ public class QuadraticLine extends SuperLine {
                 range[0] = oldPoint[1];
                 range[1] = newPoint[1];
             }
-            domain[0] = oldPoint[0];
+            lineRightOfVertex = h.compareTo(otherH) > 0;
         }
     }
 
@@ -70,7 +80,7 @@ public class QuadraticLine extends SuperLine {
      * characters to be formatted into desmos correctly
      *
      * @return string of the line formatted to be pasted into the desmos expression
-     * lines.
+     *         lines.
      */
     public String lineForDesmos() {
         String returnedLine;
@@ -92,7 +102,7 @@ public class QuadraticLine extends SuperLine {
             }
             if (useDomain) {
                 returnedLine += " \\left\\{" + domain[0] + "\\le x\\le" + domain[1] + "\\right\\}";
-            } else if (oldPoint[0].compareTo(newPoint[0]) < 0) {
+            } else if (!lineRightOfVertex) {
                 returnedLine += " \\left\\{" + range[0] + "\\le y\\le" + range[1] + "\\right\\} \\left\\{" + domain[0]
                         + "\\le x\\right\\}";
             } else {
@@ -104,8 +114,8 @@ public class QuadraticLine extends SuperLine {
     }
 
     public String mirroredLineForDesmos() {
-        String returnedLine = "";
-        returnedLine = (new QuadraticLine(newPoint, oldPoint)).lineForDesmos();
+        String returnedLine;
+        returnedLine = (new RootLine(oldPoint, newPoint)).lineForDesmos();
         return returnedLine;
     }
 }

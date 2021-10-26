@@ -112,7 +112,7 @@ public class CubicLine extends SuperLine {
     }
 
     public String mirroredLineForDesmos() {
-        String returnedLine = "";
+        String returnedLine;
         returnedLine = (new CubicLine(newPoint, oldPoint)).lineForDesmos();
         return returnedLine;
     }

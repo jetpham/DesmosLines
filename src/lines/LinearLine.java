@@ -112,7 +112,7 @@ public class LinearLine extends SuperLine {
     }
 
     public String mirroredLineForDesmos() {
-        String returnedLine = "";
+        String returnedLine;
         returnedLine = (new LinearLine(newPoint, oldPoint)).lineForDesmos();
         return returnedLine;
     }
