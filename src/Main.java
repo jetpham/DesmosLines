@@ -32,7 +32,7 @@ public class Main {
         for (String i : text.split("\n")) {
             BigDecimal[] bigDecimals;
             bigDecimals = new BigDecimal[]{new BigDecimal(valueOf(parseDouble(i.split("\t")[0]))),
-                    new BigDecimal(valueOf(parseDouble(i.split("\t")[1])))};
+                    new BigDecimal(valueOf(parseDouble(i.split("\t")[1]))), new BigDecimal(valueOf(parseDouble(i.split("\t")[2])))};
             points.add(bigDecimals);
         }
         BigDecimal[][] pointsArray = {{}};
@@ -60,9 +60,31 @@ public class Main {
         boolean firstPoint = true;
         BigDecimal[] oldPoint = {};
         BigDecimal[][] pointTable = getPointTable();
+        final BigDecimal[] cases;
+        cases = new BigDecimal[]{new BigDecimal("0.0"),new BigDecimal("1.0"),new BigDecimal("2.0"),new BigDecimal("3.0"),new BigDecimal("4.0")};
         for (BigDecimal[] i : pointTable) {
+            System.out.println("in loop");
             BigDecimal[] newPoint = {i[0], i[1]};
-            if (!firstPoint) lines.add(RandomLine(oldPoint, newPoint));
+            if (!firstPoint){
+                System.out.println(cases[0].toPlainString());
+                System.out.println(i[2].toPlainString());
+                if (cases[0].equals(i[2])) {
+                    System.out.println("random");
+                    lines.add(RandomLine(oldPoint, newPoint));
+                } else if (cases[1].equals(i[2])) {
+                    System.out.println("Linear");
+                    lines.add(new LinearLine(oldPoint, newPoint));
+                } else if (cases[2].equals(i[2])) {
+                    System.out.println("Quadratic");
+                    lines.add(new QuadraticLine(oldPoint, newPoint));
+                } else if (cases[3].equals(i[2])) {
+                    System.out.println("Root");
+                    lines.add(new RootLine(oldPoint, newPoint));
+                } else if (cases[4].equals(i[2])) {
+                    System.out.println("Cubic");
+                    lines.add(new CubicLine(oldPoint, newPoint));
+                }
+            }
             firstPoint = false;
             oldPoint = newPoint;
         }
