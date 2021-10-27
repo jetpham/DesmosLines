@@ -58,9 +58,14 @@ public class CubicLine extends SuperLine {
 
     private String asFraction(BigDecimal a, BigDecimal b) {
         BigDecimal gcd = gcd(a, b);
-        return format("\\frac'{'{0}'}{'{1}'}'",
-                a.divide(gcd).toPlainString(),
-                b.divide(gcd).toPlainString());
+        if("1".equals(b.divide(gcd).toPlainString())){
+            return format("{0}",
+                    a.divide(gcd).toPlainString());
+        } else {
+            return format("\\frac'{'{0}'}{'{1}'}'",
+                    a.divide(gcd).toPlainString(),
+                    b.divide(gcd).toPlainString());
+        }
     }
 
     /**
@@ -124,6 +129,6 @@ public class CubicLine extends SuperLine {
 
     @Override
     public String mirroredLineForDesmos() {
-        return (new CubicLine(newPoint, oldPoint)).lineForDesmos();
+        return (new CubicRootLine(oldPoint, newPoint)).lineForDesmos();
     }
 }

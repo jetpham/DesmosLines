@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import static java.text.MessageFormat.format;
 
-public class RootLine extends SuperLine {
+public class QuadradicRootLine extends SuperLine {
     private final BigDecimal[] domain = {new BigDecimal(0), new BigDecimal(0)};
     private final BigDecimal[] range = {new BigDecimal(0), new BigDecimal(0)};
     private final BigDecimal[] oldPoint;
@@ -16,7 +16,7 @@ public class RootLine extends SuperLine {
     private LinearLine linearLine;
     private String fracA = "";
 
-    public RootLine(BigDecimal[] oldPoint, BigDecimal[] newPoint) {
+    public QuadradicRootLine(BigDecimal[] oldPoint, BigDecimal[] newPoint) {
         this.oldPoint = oldPoint;
         this.newPoint = newPoint;
         if (oldPoint[1].equals(newPoint[1]) || oldPoint[0].equals(newPoint[0])) {
@@ -60,10 +60,19 @@ public class RootLine extends SuperLine {
 
     private String asFraction(BigDecimal a, BigDecimal b) {
         BigDecimal gcd = gcd(a, b);
-        return format("\\frac'{'{0}\\sqrt'{'{1}'}}{'{2}'}'",
-                a.divide(gcd).toPlainString(),
-                b,
-                b.divide(gcd).toPlainString());
+        if("1".equals(a.divide(gcd).toPlainString())){
+            return format("\\frac'{'\\sqrt'{'{0}'}}{'{1}'}'",
+                    b,
+                    b.divide(gcd).toPlainString());
+        } else if("1".equals(b.divide(gcd).toPlainString())){
+            return format("{0}",
+                    a.divide(gcd).toPlainString());
+        } else {
+            return format("\\frac'{'{0}\\sqrt'{'{1}'}}{'{2}'}'",
+                    a.divide(gcd).toPlainString(),
+                    b,
+                    b.divide(gcd).toPlainString());
+        }
     }
 
     /**

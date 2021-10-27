@@ -7,10 +7,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import static java.lang.Double.parseDouble;
 import static java.lang.String.valueOf;
@@ -47,7 +45,7 @@ public class Main {
             case 0 -> returnedSuperLine = new LinearLine(oldPoint, newPoint);
             case 1 -> returnedSuperLine = new CubicLine(oldPoint, newPoint);
             case 2 -> returnedSuperLine = new QuadraticLine(oldPoint, newPoint);
-            case 3 -> returnedSuperLine = new RootLine(oldPoint, newPoint);
+            case 3 -> returnedSuperLine = new QuadradicRootLine(oldPoint, newPoint);
             default -> {
             }
         }
@@ -58,30 +56,22 @@ public class Main {
 
         ArrayList<SuperLine> lines = new ArrayList<>();
         boolean firstPoint = true;
-        BigDecimal[] oldPoint = {};
+        BigDecimal[] oldPoint = new BigDecimal[]{};
         BigDecimal[][] pointTable = getPointTable();
         final BigDecimal[] cases;
         cases = new BigDecimal[]{new BigDecimal("0.0"),new BigDecimal("1.0"),new BigDecimal("2.0"),new BigDecimal("3.0"),new BigDecimal("4.0")};
         for (BigDecimal[] i : pointTable) {
-            System.out.println("in loop");
             BigDecimal[] newPoint = {i[0], i[1]};
             if (!firstPoint){
-                System.out.println(cases[0].toPlainString());
-                System.out.println(i[2].toPlainString());
                 if (cases[0].equals(i[2])) {
-                    System.out.println("random");
                     lines.add(RandomLine(oldPoint, newPoint));
                 } else if (cases[1].equals(i[2])) {
-                    System.out.println("Linear");
                     lines.add(new LinearLine(oldPoint, newPoint));
                 } else if (cases[2].equals(i[2])) {
-                    System.out.println("Quadratic");
                     lines.add(new QuadraticLine(oldPoint, newPoint));
                 } else if (cases[3].equals(i[2])) {
-                    System.out.println("Root");
-                    lines.add(new RootLine(oldPoint, newPoint));
+                    lines.add(new QuadradicRootLine(oldPoint, newPoint));
                 } else if (cases[4].equals(i[2])) {
-                    System.out.println("Cubic");
                     lines.add(new CubicLine(oldPoint, newPoint));
                 }
             }

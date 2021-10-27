@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import static java.text.MessageFormat.format;
 
-public class QuadraticLine extends SuperLine {
+public class CubicRootLine extends SuperLine {
     private final BigDecimal[] domain = {new BigDecimal(0), new BigDecimal(0)};
     private final BigDecimal[] range = {new BigDecimal(0), new BigDecimal(0)};
     private final BigDecimal[] oldPoint;
@@ -15,27 +15,23 @@ public class QuadraticLine extends SuperLine {
     private boolean useDomain = true;
     private LinearLine linearLine;
     private String fracA = "";
-    private boolean lineRightOfVertex;
 
-    public QuadraticLine(BigDecimal[] oldPoint, BigDecimal[] newPoint) {
+    public CubicRootLine(BigDecimal[] oldPoint, BigDecimal[] newPoint) {
         this.oldPoint = oldPoint;
         this.newPoint = newPoint;
-        BigDecimal otherH = new BigDecimal(0);
         if (oldPoint[1].equals(newPoint[1]) || oldPoint[0].equals(newPoint[0])) {
             linearLine = new LinearLine(oldPoint, newPoint);
             isLinear = true;
-        } else if ((newPoint[0].subtract(oldPoint[0])).compareTo(new BigDecimal(0)) >= 0) {
-            fracA = asFraction(newPoint[1].subtract(oldPoint[1]), newPoint[0].subtract(oldPoint[0]).pow(2));
-            h = oldPoint[0];
-            k = oldPoint[1];
-            domain[0] = h;
-            otherH = newPoint[0];
         } else {
-            fracA = asFraction(oldPoint[1].subtract(newPoint[1]), oldPoint[0].subtract(newPoint[0]).pow(2));
-            h = newPoint[0];
-            k = newPoint[1];
-            domain[0] = h;
-            otherH = oldPoint[0];
+            if ((newPoint[0].subtract(oldPoint[0])).compareTo(new BigDecimal(0)) >= 0) {
+                fracA = asFraction(newPoint[1].subtract(oldPoint[1]), newPoint[0].subtract(oldPoint[0]));
+                h = oldPoint[0];
+                k = oldPoint[1];
+            } else {
+                fracA = asFraction(oldPoint[1].subtract(newPoint[1]), oldPoint[0].subtract(newPoint[0]));
+                h = newPoint[0];
+                k = newPoint[1];
+            }
         }
         if (oldPoint[0].subtract(newPoint[0]).abs().compareTo(oldPoint[1].subtract(newPoint[1]).abs()) >= 0) {
             if (oldPoint[0].compareTo(newPoint[0]) >= 0) {
@@ -54,7 +50,7 @@ public class QuadraticLine extends SuperLine {
                 range[0] = oldPoint[1];
                 range[1] = newPoint[1];
             }
-            lineRightOfVertex = h.compareTo(otherH) > 0;
+            domain[0] = oldPoint[0];
         }
     }
 
@@ -64,14 +60,21 @@ public class QuadraticLine extends SuperLine {
 
     private String asFraction(BigDecimal a, BigDecimal b) {
         BigDecimal gcd = gcd(a, b);
-        if("1".equals(b.divide(gcd).toPlainString())){
+        System.out.println(a.divide(gcd).toPlainString());
+        System.out.println(b.toPlainString());
+        System.out.println(b.divide(gcd).toPlainString());
+        if ("1".equals(a.divide(gcd).toPlainString())){
+            return format("\\frac'{'\\sqrt[3]'{'{0}'}^{2}}{'{1}'}'",
+                    b.toPlainString(),
+                    b.divide(gcd).toPlainString());
+        } else if ("1".equals(b.divide(gcd).toPlainString())){
             return format("{0}",
                     a.divide(gcd).toPlainString());
-        } else {
-            return format("\\frac'{'{0}'}{'{1}'}'",
-                    a.divide(gcd).toPlainString(),
-                    b.divide(gcd).toPlainString());
-        }
+        }else{
+            return format("\\frac'{'{0}\\sqrt[3]'{'{1}'}^{2}}{'{2}'}'",
+                a.divide(gcd).toPlainString(),
+                b.toPlainString(),
+                b.divide(gcd).toPlainString());}
     }
 
     /**
@@ -94,22 +97,22 @@ public class QuadraticLine extends SuperLine {
             returnedLine = linearLine.lineForDesmos();
         } else {
             if (h.compareTo(new BigDecimal(0)) >= 0 && k.compareTo(new BigDecimal(0)) >= 0) {
-                returnedLine = format("y = {0}\\left(x - {1}\\right)^'{'2'}' + {2}",
+                returnedLine = format("y = {0}\\sqrt[3]'{'x - {1}'}' + {2}",
                         fracA,
                         h.toPlainString(),
                         k.toPlainString());
             } else if (h.compareTo(new BigDecimal(0)) >= 0 && k.compareTo(new BigDecimal(0)) < 0) {
-                returnedLine = format("y = {0}\\left(x - {1}\\right)^'{'2'}' - {2}",
+                returnedLine = format("y = {0}\\sqrt[3]'{'x - {1}'}' - {2}",
                         fracA,
                         h.toPlainString(),
                         k.abs().toPlainString());
             } else if (h.compareTo(new BigDecimal(0)) < 0 && k.compareTo(new BigDecimal(0)) >= 0) {
-                returnedLine = format("y = {0}\\left(x + {1}\\right)^'{'2'}' + {2}",
+                returnedLine = format("y = {0}\\sqrt[3]'{'x + {1}'}' + {2}",
                         fracA,
                         h.abs().toPlainString(),
                         k.toPlainString());
             } else {
-                returnedLine = format("y = {0}\\left(x + {1}\\right)^'{'2'}' - {2}",
+                returnedLine = format("y = {0}\\sqrt[3]'{'x + {1}'}' - {2}",
                         fracA,
                         h.abs().toPlainString(),
                         k.abs().toPlainString());
@@ -118,7 +121,7 @@ public class QuadraticLine extends SuperLine {
                 returnedLine += format(" \\left\\'{'{0}\\le x\\le{1}\\right\\'}'",
                         domain[0],
                         domain[1]);
-            } else if (!lineRightOfVertex) {
+            } else if (oldPoint[0].compareTo(newPoint[0]) < 0) {
                 returnedLine += format(" \\left\\'{'{0}\\le y\\le{1}\\right\\'}' \\left\\'{'{2}\\le x\\right\\'}'",
                         range[0],
                         range[1],
@@ -135,6 +138,6 @@ public class QuadraticLine extends SuperLine {
 
     @Override
     public String mirroredLineForDesmos() {
-        return (new QuadradicRootLine(oldPoint, newPoint)).lineForDesmos();
+        return (new CubicLine(oldPoint, newPoint).lineForDesmos());
     }
 }
