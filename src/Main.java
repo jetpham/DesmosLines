@@ -5,7 +5,6 @@ import src.lines.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,12 +16,13 @@ import static java.nio.file.Files.*;
 
 public class Main {
     private final static boolean mirrorLines = true;
+    private final static String resourcesPath = "C:\\Users\\Jet Pham\\Documents\\repos\\DesmosLines\\src\\main\\resources";
 
     public static BigDecimal[][] getPointTable() {
         String text = "";
         try {
             text = new String(readAllBytes(Paths
-                    .get("C:\\Users\\Jet Pham\\Documents\\Repos\\DesmosLines\\src\\main\\resources\\points.txt")));
+                    .get(resourcesPath + "\\points.txt")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -53,18 +53,16 @@ public class Main {
         boolean firstPoint = true;
         BigDecimal[] oldPoint = {};
         BigDecimal[][] pointTable = getPointTable();
-        for (int j = 0, pointTableLength = pointTable.length; j < pointTableLength; j++) {
-            BigDecimal[] i = pointTable[j];
+        for (BigDecimal[] i : pointTable) {
             BigDecimal[] newPoint = {i[0], i[1]};
             if (!firstPoint) lines.add(RandomLine(oldPoint, newPoint));
             firstPoint = false;
             oldPoint = newPoint;
         }
         SuperLine[] linesArray = {};
-        linesArray = lines.<SuperLine>toArray(linesArray);
+        linesArray = lines.toArray(linesArray);
         StringBuilder essay = new StringBuilder();
-        for (int j = 0, linesArrayLength = linesArray.length; j < linesArrayLength; j++) {
-            SuperLine i = linesArray[j];
+        for (SuperLine i : linesArray) {
             System.out.println(i.getClass().getSimpleName());
             essay.append(i.lineForDesmos()).append("\n");
             if (!Objects.equals(i.getClass().getSimpleName(), "LinearLine") && mirrorLines) {
@@ -72,10 +70,11 @@ public class Main {
                 essay.append("\n");
             }
         }
+
         try {
             FileWriter myWriter;
             myWriter = new FileWriter(
-                    "C:\\Users\\Jet Pham\\Documents\\Repos\\DesmosLines\\src\\main\\resources\\output.txt");
+                    resourcesPath + "\\output.txt");
             myWriter.write(essay.toString());
             myWriter.close();
             System.out.println("Successfully wrote to the file.");
