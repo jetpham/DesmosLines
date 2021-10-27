@@ -12,6 +12,8 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import static java.lang.Double.parseDouble;
+import static java.lang.String.valueOf;
 import static java.nio.file.Files.readAllBytes;
 
 public class Main {
@@ -26,8 +28,13 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ArrayList<BigDecimal[]> points = Arrays.stream(text.split("\n")).map(i -> new BigDecimal[]{new BigDecimal(String.valueOf(Double.parseDouble(i.split("\t")[0]))),
-                new BigDecimal(String.valueOf(Double.parseDouble(i.split("\t")[1])))}).collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<BigDecimal[]> points = new ArrayList<>();
+        for (String i : text.split("\n")) {
+            BigDecimal[] bigDecimals;
+            bigDecimals = new BigDecimal[]{new BigDecimal(valueOf(parseDouble(i.split("\t")[0]))),
+                    new BigDecimal(valueOf(parseDouble(i.split("\t")[1])))};
+            points.add(bigDecimals);
+        }
         BigDecimal[][] pointsArray = {{}};
         pointsArray = points.toArray(pointsArray);
         return pointsArray;
