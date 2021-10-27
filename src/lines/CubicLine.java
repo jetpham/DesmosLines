@@ -11,7 +11,7 @@ public class CubicLine extends SuperLine {
     private final BigDecimal[] newPoint;
     // private BigDecimal a = new BigDecimal(0); // the slope for diagonal lines
     private BigDecimal h = new BigDecimal(0);
-    private BigDecimal k = new BigDecimal(0); // the y intercept for 'y =' functions & x values for 'x =' functions
+    private BigDecimal k = new BigDecimal(0);
     private boolean isLinear = false;
     private boolean useDomain = true;
     private LinearLine linearLine;

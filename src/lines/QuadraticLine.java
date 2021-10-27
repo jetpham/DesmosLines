@@ -10,7 +10,7 @@ public class QuadraticLine extends SuperLine {
     private final BigDecimal[] oldPoint;
     private final BigDecimal[] newPoint;
     private BigDecimal h = new BigDecimal(0);
-    private BigDecimal k = new BigDecimal(0); // the y intercept for 'y =' functions & x values for 'x =' functions
+    private BigDecimal k = new BigDecimal(0);
     private boolean isLinear = false;
     private boolean useDomain = true;
     private LinearLine linearLine;
