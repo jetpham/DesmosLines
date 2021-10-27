@@ -1,10 +1,6 @@
 package src;
 
-import src.lines.CubicLine;
-import src.lines.LinearLine;
-import src.lines.QuadraticLine;
-import src.lines.RootLine;
-import src.lines.SuperLine;
+import src.lines.*;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,16 +16,16 @@ public class Main {
     public static BigDecimal[][] getPointTable() {
         String text = "";
         ArrayList<BigDecimal[]> points = new ArrayList<>();
-        BigDecimal[][] pointsArray = { {} };
+        BigDecimal[][] pointsArray = {{}};
         try {
             text = new String(Files.readAllBytes(Paths
-                    .get("C:\\Users\\Jet-Laptop\\Documents\\Repos\\DesmosLines\\src\\main\\resources\\points.txt")));
+                    .get("C:\\Users\\Jet Pham\\Documents\\Repos\\DesmosLines\\src\\main\\resources\\points.txt")));
         } catch (IOException e) {
             e.printStackTrace();
         }
         for (String i : text.split("\n")) {
-            BigDecimal[] point = { new BigDecimal(String.valueOf(Double.parseDouble(i.split("\t")[0]))),
-                    new BigDecimal(String.valueOf(Double.parseDouble(i.split("\t")[1]))) };
+            BigDecimal[] point = {new BigDecimal(String.valueOf(Double.parseDouble(i.split("\t")[0]))),
+                    new BigDecimal(String.valueOf(Double.parseDouble(i.split("\t")[1])))};
             points.add(point);
         }
         pointsArray = points.toArray(pointsArray);
@@ -40,25 +36,25 @@ public class Main {
         int seed = new Random().nextInt(4);
         SuperLine returnedSuperLine = null;
         switch (seed) {
-        case 0:
-            returnedSuperLine = new LinearLine(oldPoint, newPoint);
+            case 0:
+                returnedSuperLine = new LinearLine(oldPoint, newPoint);
 
-            break;
-        case 1:
-            returnedSuperLine = new CubicLine(oldPoint, newPoint);
+                break;
+            case 1:
+                returnedSuperLine = new CubicLine(oldPoint, newPoint);
 
-            break;
-        case 2:
-            returnedSuperLine = new QuadraticLine(oldPoint, newPoint);
+                break;
+            case 2:
+                returnedSuperLine = new QuadraticLine(oldPoint, newPoint);
 
-            break;
-        case 3:
-            returnedSuperLine = new RootLine(oldPoint, newPoint);
+                break;
+            case 3:
+                returnedSuperLine = new RootLine(oldPoint, newPoint);
 
-            break;
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
         return returnedSuperLine;
     }
@@ -70,7 +66,7 @@ public class Main {
         BigDecimal[] oldPoint = {};
 
         for (BigDecimal[] i : getPointTable()) {
-            BigDecimal[] newPoint = { i[0], i[1] };
+            BigDecimal[] newPoint = {i[0], i[1]};
             if (!firstPoint) {
                 lines.add(RandomLine(oldPoint, newPoint));
             }
@@ -88,7 +84,7 @@ public class Main {
         }
         try {
             FileWriter myWriter = new FileWriter(
-                    "C:\\Users\\Jet-Laptop\\Documents\\Repos\\DesmosLines\\src\\main\\resources\\output.txt");
+                    "C:\\Users\\Jet Pham\\Documents\\Repos\\DesmosLines\\src\\main\\resources\\output.txt");
             myWriter.write(essay.toString());
             myWriter.close();
             System.out.println("Successfully wrote to the file.");

@@ -3,10 +3,8 @@ package src.lines;
 import java.math.BigDecimal;
 
 public class QuadraticLine extends SuperLine {
-    private final BigDecimal[] domain = { new BigDecimal(0), new BigDecimal(0) }; // domain for functions that follow 'y
-    // ='
-    private final BigDecimal[] range = { new BigDecimal(0), new BigDecimal(0) }; // domain for functions that follow 'y
-    // ='
+    private final BigDecimal[] domain = {new BigDecimal(0), new BigDecimal(0)};
+    private final BigDecimal[] range = {new BigDecimal(0), new BigDecimal(0)};
     private final BigDecimal[] oldPoint;
     private final BigDecimal[] newPoint;
     private BigDecimal h = new BigDecimal(0);
@@ -80,7 +78,7 @@ public class QuadraticLine extends SuperLine {
      * characters to be formatted into desmos correctly
      *
      * @return string of the line formatted to be pasted into the desmos expression
-     *         lines.
+     * lines.
      */
     public String lineForDesmos() {
         String returnedLine;

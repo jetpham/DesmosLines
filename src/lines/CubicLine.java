@@ -3,13 +3,10 @@ package src.lines;
 import java.math.BigDecimal;
 
 public class CubicLine extends SuperLine {
-    private final BigDecimal[] domain = {new BigDecimal(0), new BigDecimal(0)}; // domain for functions that follow 'y
-    // ='
-    private final BigDecimal[] range = {new BigDecimal(0), new BigDecimal(0)}; // domain for functions that follow 'y
-    // ='
+    private final BigDecimal[] domain = {new BigDecimal(0), new BigDecimal(0)};
+    private final BigDecimal[] range = {new BigDecimal(0), new BigDecimal(0)};
     private final BigDecimal[] oldPoint;
     private final BigDecimal[] newPoint;
-    // private BigDecimal a = new BigDecimal(0); // the slope for diagonal lines
     private BigDecimal h = new BigDecimal(0);
     private BigDecimal k = new BigDecimal(0);
     private boolean isLinear = false;
@@ -64,7 +61,6 @@ public class CubicLine extends SuperLine {
     private String asFraction(BigDecimal a, BigDecimal b) {
         BigDecimal gcd = gcd(a, b);
         return "\\frac{" + a.divide(gcd).toPlainString() + "}{" + b.divide(gcd).toPlainString() + "}";
-        // \frac{5}{123}
     }
 
     /**

@@ -3,14 +3,12 @@ package src.lines;
 import java.math.BigDecimal;
 
 public class RootLine extends SuperLine {
-    private final BigDecimal[] domain = { new BigDecimal(0), new BigDecimal(0) }; // domain for functions that follow 'y
-    // ='
-    private final BigDecimal[] range = { new BigDecimal(0), new BigDecimal(0) }; // domain for functions that follow 'y
-    // ='
+    private final BigDecimal[] domain = {new BigDecimal(0), new BigDecimal(0)};
+    private final BigDecimal[] range = {new BigDecimal(0), new BigDecimal(0)};
     private final BigDecimal[] oldPoint;
     private final BigDecimal[] newPoint;
     private BigDecimal h = new BigDecimal(0);
-    private BigDecimal k = new BigDecimal(0); // the y intercept for 'y =' functions & x values for 'x =' functions
+    private BigDecimal k = new BigDecimal(0);
     private boolean isLinear = false;
     private boolean useDomain = true;
     private LinearLine linearLine;
@@ -74,7 +72,7 @@ public class RootLine extends SuperLine {
      * characters to be formatted into desmos correctly
      *
      * @return string of the line formatted to be pasted into the desmos expression
-     *         lines.
+     * lines.
      */
     public String lineForDesmos() {
         String returnedLine;
