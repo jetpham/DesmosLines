@@ -8,26 +8,27 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
+import java.util.stream.Collectors;
+
+import static java.nio.file.Files.*;
 
 public class Main {
     private final static boolean mirrorLines = true;
 
     public static BigDecimal[][] getPointTable() {
         String text = "";
-        ArrayList<BigDecimal[]> points = new ArrayList<>();
-        BigDecimal[][] pointsArray = {{}};
         try {
-            text = new String(Files.readAllBytes(Paths
+            text = new String(readAllBytes(Paths
                     .get("C:\\Users\\Jet Pham\\Documents\\Repos\\DesmosLines\\src\\main\\resources\\points.txt")));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        for (String i : text.split("\n")) {
-            BigDecimal[] point = {new BigDecimal(String.valueOf(Double.parseDouble(i.split("\t")[0]))),
-                    new BigDecimal(String.valueOf(Double.parseDouble(i.split("\t")[1])))};
-            points.add(point);
-        }
+        ArrayList<BigDecimal[]> points = Arrays.stream(text.split("\n")).map(i -> new BigDecimal[]{new BigDecimal(String.valueOf(Double.parseDouble(i.split("\t")[0]))),
+                new BigDecimal(String.valueOf(Double.parseDouble(i.split("\t")[1])))}).collect(Collectors.toCollection(ArrayList::new));
+        BigDecimal[][] pointsArray = {{}};
         pointsArray = points.toArray(pointsArray);
         return pointsArray;
     }
@@ -47,30 +48,33 @@ public class Main {
     }
 
     public static void main(String[] args) {
+
         ArrayList<SuperLine> lines = new ArrayList<>();
         boolean firstPoint = true;
-        SuperLine[] linesArray = {};
         BigDecimal[] oldPoint = {};
-
-        for (BigDecimal[] i : getPointTable()) {
+        BigDecimal[][] pointTable = getPointTable();
+        for (int j = 0, pointTableLength = pointTable.length; j < pointTableLength; j++) {
+            BigDecimal[] i = pointTable[j];
             BigDecimal[] newPoint = {i[0], i[1]};
-            if (!firstPoint) {
-                lines.add(RandomLine(oldPoint, newPoint));
-            }
+            if (!firstPoint) lines.add(RandomLine(oldPoint, newPoint));
             firstPoint = false;
             oldPoint = newPoint;
         }
-        linesArray = lines.toArray(linesArray);
+        SuperLine[] linesArray = {};
+        linesArray = lines.<SuperLine>toArray(linesArray);
         StringBuilder essay = new StringBuilder();
-        for (SuperLine i : linesArray) {
+        for (int j = 0, linesArrayLength = linesArray.length; j < linesArrayLength; j++) {
+            SuperLine i = linesArray[j];
             System.out.println(i.getClass().getSimpleName());
             essay.append(i.lineForDesmos()).append("\n");
-            if (!i.getClass().getSimpleName().equals("LinearLine") && mirrorLines) {
-                essay.append(i.mirroredLineForDesmos()).append("\n");
+            if (!Objects.equals(i.getClass().getSimpleName(), "LinearLine") && mirrorLines) {
+                essay.append(i.mirroredLineForDesmos());
+                essay.append("\n");
             }
         }
         try {
-            FileWriter myWriter = new FileWriter(
+            FileWriter myWriter;
+            myWriter = new FileWriter(
                     "C:\\Users\\Jet Pham\\Documents\\Repos\\DesmosLines\\src\\main\\resources\\output.txt");
             myWriter.write(essay.toString());
             myWriter.close();
