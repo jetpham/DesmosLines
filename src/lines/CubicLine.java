@@ -2,7 +2,7 @@ package src.lines;
 
 import java.math.BigDecimal;
 
-import static java.text.MessageFormat.*;
+import static java.text.MessageFormat.format;
 
 public class CubicLine extends SuperLine {
     private final BigDecimal[] domain = {new BigDecimal(0), new BigDecimal(0)};

@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import static java.nio.file.Files.*;
+import static java.nio.file.Files.readAllBytes;
 
 public class Main {
     private final static boolean mirrorLines = true;
