@@ -60,11 +60,11 @@ public class QuadradicRootLine extends SuperLine {
 
     private String asFraction(BigDecimal a, BigDecimal b) {
         BigDecimal gcd = gcd(a, b);
-        if("1".equals(a.divide(gcd).toPlainString())){
+        if ("1".equals(a.divide(gcd).toPlainString())) {
             return format("\\frac'{'\\sqrt'{'{0}'}}{'{1}'}'",
                     b,
                     b.divide(gcd).toPlainString());
-        } else if("1".equals(b.divide(gcd).toPlainString())){
+        } else if ("1".equals(b.divide(gcd).toPlainString())) {
             return format("{0}",
                     a.divide(gcd).toPlainString());
         } else {

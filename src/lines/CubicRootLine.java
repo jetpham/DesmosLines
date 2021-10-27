@@ -63,18 +63,19 @@ public class CubicRootLine extends SuperLine {
         System.out.println(a.divide(gcd).toPlainString());
         System.out.println(b.toPlainString());
         System.out.println(b.divide(gcd).toPlainString());
-        if ("1".equals(a.divide(gcd).toPlainString())){
+        if ("1".equals(a.divide(gcd).toPlainString())) {
             return format("\\frac'{'\\sqrt[3]'{'{0}'}^{2}}{'{1}'}'",
                     b.toPlainString(),
                     b.divide(gcd).toPlainString());
-        } else if ("1".equals(b.divide(gcd).toPlainString())){
+        } else if ("1".equals(b.divide(gcd).toPlainString())) {
             return format("{0}",
                     a.divide(gcd).toPlainString());
-        }else{
+        } else {
             return format("\\frac'{'{0}\\sqrt[3]'{'{1}'}^{2}}{'{2}'}'",
-                a.divide(gcd).toPlainString(),
-                b.toPlainString(),
-                b.divide(gcd).toPlainString());}
+                    a.divide(gcd).toPlainString(),
+                    b.toPlainString(),
+                    b.divide(gcd).toPlainString());
+        }
     }
 
     /**

@@ -64,7 +64,7 @@ public class QuadraticLine extends SuperLine {
 
     private String asFraction(BigDecimal a, BigDecimal b) {
         BigDecimal gcd = gcd(a, b);
-        if("1".equals(b.divide(gcd).toPlainString())){
+        if ("1".equals(b.divide(gcd).toPlainString())) {
             return format("{0}",
                     a.divide(gcd).toPlainString());
         } else {

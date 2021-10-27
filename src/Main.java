@@ -59,10 +59,10 @@ public class Main {
         BigDecimal[] oldPoint = new BigDecimal[]{};
         BigDecimal[][] pointTable = getPointTable();
         final BigDecimal[] cases;
-        cases = new BigDecimal[]{new BigDecimal("0.0"),new BigDecimal("1.0"),new BigDecimal("2.0"),new BigDecimal("3.0"),new BigDecimal("4.0")};
+        cases = new BigDecimal[]{new BigDecimal("0.0"), new BigDecimal("1.0"), new BigDecimal("2.0"), new BigDecimal("3.0"), new BigDecimal("4.0")};
         for (BigDecimal[] i : pointTable) {
             BigDecimal[] newPoint = {i[0], i[1]};
-            if (!firstPoint){
+            if (!firstPoint) {
                 if (cases[0].equals(i[2])) {
                     lines.add(RandomLine(oldPoint, newPoint));
                 } else if (cases[1].equals(i[2])) {
