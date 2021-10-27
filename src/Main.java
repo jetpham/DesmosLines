@@ -16,7 +16,7 @@ import static java.nio.file.Files.*;
 
 public class Main {
     private final static boolean mirrorLines = true;
-    private final static String resourcesPath = "C:\\Users\\Jet Pham\\Documents\\repos\\DesmosLines\\src\\main\\resources";
+    private final static String resourcesPath = "C:\\Users\\Jet-Laptop\\Documents\\repos\\DesmosLines\\src\\main\\resources";
 
     public static BigDecimal[][] getPointTable() {
         String text = "";

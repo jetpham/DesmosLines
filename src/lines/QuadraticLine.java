@@ -38,7 +38,6 @@ public class QuadraticLine extends SuperLine {
             otherH = oldPoint[0];
         }
         if (oldPoint[0].subtract(newPoint[0]).abs().compareTo(oldPoint[1].subtract(newPoint[1]).abs()) >= 0) {
-            System.out.println("true");
             if (oldPoint[0].compareTo(newPoint[0]) >= 0) {
                 domain[0] = newPoint[0];
                 domain[1] = oldPoint[0];
@@ -47,7 +46,6 @@ public class QuadraticLine extends SuperLine {
                 domain[1] = newPoint[0];
             }
         } else {
-            System.out.println("false");
             useDomain = false;
             if (oldPoint[1].compareTo(newPoint[1]) >= 0) {
                 range[0] = newPoint[1];

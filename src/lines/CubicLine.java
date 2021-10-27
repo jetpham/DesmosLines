@@ -31,10 +31,7 @@ public class CubicLine extends SuperLine {
             k = oldPoint[1];
             fracA = asFraction(newPoint[1].subtract(oldPoint[1]), newPoint[0].subtract(oldPoint[0]).pow(3));
         }
-        System.out.println("Math.abs(" + oldPoint[0] + " - " + newPoint[0] + ") >= Math.abs(" + oldPoint[1] + " - "
-                + newPoint[1] + ")");
         if (oldPoint[0].subtract(newPoint[0]).abs().compareTo(oldPoint[1].subtract(newPoint[1]).abs()) >= 0) {
-            System.out.println("true");
             if (oldPoint[0].compareTo(newPoint[0]) >= 0) {
                 domain[0] = newPoint[0];
                 domain[1] = oldPoint[0];
@@ -43,7 +40,6 @@ public class CubicLine extends SuperLine {
                 domain[1] = newPoint[0];
             }
         } else {
-            System.out.println("false");
             useDomain = false;
             if (oldPoint[1].compareTo(newPoint[1]) >= 0) {
                 range[0] = newPoint[1];
