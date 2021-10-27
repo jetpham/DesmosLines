@@ -2,30 +2,25 @@ package src.lines;
 
 import java.math.BigDecimal;
 
+import static java.text.MessageFormat.format;
+
 public class LinearLine extends SuperLine {
-    private final BigDecimal[] domain = {new BigDecimal(0), new BigDecimal(0)}; // domain for functions that follow 'y
-    // ='
-    private final BigDecimal[] range = {new BigDecimal(0), new BigDecimal(0)}; // range for functions that follow 'x
-    // ='
-    // b' functions
+    private final BigDecimal[] domain = {new BigDecimal(0), new BigDecimal(0)};
+    private final BigDecimal[] range = {new BigDecimal(0), new BigDecimal(0)};
     private final int lineType; // 0: 'y = b', 1: 'x = b', 2: 'y = mx + b'
     private final BigDecimal[] oldPoint;
     private final BigDecimal[] newPoint;
-    private String fracM = ""; // the slope for diagonal lines
+    private String fracM = "";
     private BigDecimal b;
     private String fracB = ""; // the y intercept for 'y =' functions & x values for 'x =' functions
 
     public LinearLine(BigDecimal[] oldPoint, BigDecimal[] newPoint) {
         this.newPoint = newPoint;
         this.oldPoint = oldPoint;
-        // for storing the original points. used later for the
-        // linesForNormalWithWork
-        // function
         if (oldPoint[1].equals(newPoint[1])) {
             // 'y = b' function
             lineType = 0;
             b = oldPoint[1];
-            // setting domain
             if (oldPoint[0].compareTo(newPoint[0]) >= 0) {
                 domain[0] = newPoint[0];
                 domain[1] = oldPoint[0];
@@ -37,7 +32,6 @@ public class LinearLine extends SuperLine {
             lineType = 1;
             new BigDecimal(1);
             b = oldPoint[0];
-            // setting range
             if (oldPoint[1].compareTo(newPoint[1]) >= 0) {
                 range[0] = newPoint[1];
                 range[1] = oldPoint[1];
@@ -47,18 +41,9 @@ public class LinearLine extends SuperLine {
             }
         } else {
             lineType = 2;
-            // calculating slope using the (y1-y2)/(x1-x2) formula
             fracM = asFraction(oldPoint[1].subtract(newPoint[1]), (oldPoint[0].subtract(newPoint[0])));
-            // m =
-            // oldPoint[1].subtract(newPoint[1]).divide(oldPoint[0].subtract(newPoint[0]));
-            // calculating yInt using the b = y - ((y1-y2)/(x1-x2) * x) formula
-            // (yx^2-yxw-y+z)/((x-w)x)
             fracB = asFraction((oldPoint[1].negate().multiply(newPoint[0])).add(oldPoint[0].multiply(newPoint[1])),
                     oldPoint[0].subtract(newPoint[0]));
-            // posB = (newPoint[1].negate().compareTo(new BigDecimal(0)) >= 0)
-            // ^ (oldPoint[0].subtract(newPoint[0]).multiply(oldPoint[0]).compareTo(new
-            // BigDecimal(0)) >= 0);
-            // setting domain
             if (oldPoint[0].compareTo(newPoint[0]) >= 0) {
                 domain[0] = newPoint[0];
                 domain[1] = oldPoint[0];
@@ -70,13 +55,14 @@ public class LinearLine extends SuperLine {
     }
 
     private BigDecimal gcd(BigDecimal a, BigDecimal b) {
-        return b.compareTo(new BigDecimal(0)) == 0 ? a : gcd(b, a.remainder(b));
+        return (b.compareTo(new BigDecimal(0)) == 0) ? a : gcd(b, a.remainder(b));
     }
 
     private String asFraction(BigDecimal a, BigDecimal b) {
         BigDecimal gcd = gcd(a, b);
-        return "\\frac{" + a.divide(gcd).toPlainString() + "}{" + b.divide(gcd).toPlainString() + "}";
-        // \frac{5}{123}
+        return format("\\frac'{'{0}'}{'{1}'}'",
+                a.divide(gcd).toPlainString(),
+                b.divide(gcd).toPlainString());
     }
 
     /**
@@ -92,25 +78,34 @@ public class LinearLine extends SuperLine {
      * @return string of the line formatted to be pasted into the desmos expression
      * lines.
      */
+    @Override
     public String lineForDesmos() {
         String returnedLine = "";
         switch (lineType) {
             case 0 -> // 'y = b' equation
-                    returnedLine = "y = " + b + "\\left\\{" + domain[0] + "\\le x\\le" + domain[1] + "\\right\\}";
+                    returnedLine = format("y = {0}\\left\\'{'{1}\\le x\\le{2}\\right\\'}'",
+                            b,
+                            domain[0],
+                            domain[1]);
             case 1 -> // 'x = b' equation
-                    returnedLine = "x = " + b + "\\left\\{" + range[0] + "\\le y\\le" + range[1] + "\\right\\}";
+                    returnedLine = format("x = {0}\\left\\'{'{1}\\le y\\le{2}\\right\\'}'",
+                            b,
+                            range[0],
+                            range[1]);
             case 2 -> // 'y = mx + b' equation
-                    returnedLine = "y = " + fracM + "x + " + fracB + "\\left\\{" + domain[0] + "\\le x\\le" + domain[1]
-                            + "\\right\\}";
+                    returnedLine = format("y = {0}x + {1}\\left\\'{'{2}\\le x\\le{3}\\right\\'}'",
+                            fracM,
+                            fracB,
+                            domain[0],
+                            domain[1]);
             default -> {
             }
         }
         return returnedLine;
     }
 
+    @Override
     public String mirroredLineForDesmos() {
-        String returnedLine;
-        returnedLine = (new LinearLine(newPoint, oldPoint)).lineForDesmos();
-        return returnedLine;
+        return (new LinearLine(newPoint, oldPoint)).lineForDesmos();
     }
 }

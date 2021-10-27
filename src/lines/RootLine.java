@@ -2,6 +2,8 @@ package src.lines;
 
 import java.math.BigDecimal;
 
+import static java.text.MessageFormat.format;
+
 public class RootLine extends SuperLine {
     private final BigDecimal[] domain = {new BigDecimal(0), new BigDecimal(0)};
     private final BigDecimal[] range = {new BigDecimal(0), new BigDecimal(0)};
@@ -53,12 +55,15 @@ public class RootLine extends SuperLine {
     }
 
     private BigDecimal gcd(BigDecimal a, BigDecimal b) {
-        return b.compareTo(new BigDecimal(0)) == 0 ? a : gcd(b, a.remainder(b));
+        return (b.compareTo(new BigDecimal(0)) == 0) ? a : gcd(b, a.remainder(b));
     }
 
     private String asFraction(BigDecimal a, BigDecimal b) {
         BigDecimal gcd = gcd(a, b);
-        return "\\frac{" + a.divide(gcd).toPlainString() + "\\sqrt{" + b + "}}{" + b.divide(gcd).toPlainString() + "}";
+        return format("\\frac'{'{0}\\sqrt'{'{1}'}}{'{2}'}'",
+                a.divide(gcd).toPlainString(),
+                b,
+                b.divide(gcd).toPlainString());
     }
 
     /**
@@ -74,37 +79,54 @@ public class RootLine extends SuperLine {
      * @return string of the line formatted to be pasted into the desmos expression
      * lines.
      */
+    @Override
     public String lineForDesmos() {
         String returnedLine;
         if (isLinear) {
             returnedLine = linearLine.lineForDesmos();
         } else {
             if (h.compareTo(new BigDecimal(0)) >= 0 && k.compareTo(new BigDecimal(0)) >= 0) {
-                returnedLine = "y = " + fracA + "\\sqrt{x - " + h.toPlainString() + "} + " + k.toPlainString();
+                returnedLine = format("y = {0}\\sqrt'{'x - {1}'}' + {2}",
+                        fracA,
+                        h.toPlainString(),
+                        k.toPlainString());
             } else if (h.compareTo(new BigDecimal(0)) >= 0 && k.compareTo(new BigDecimal(0)) < 0) {
-                returnedLine = "y = " + fracA + "\\sqrt{x - " + h.toPlainString() + "} - " + k.abs().toPlainString();
+                returnedLine = format("y = {0}\\sqrt'{'x - {1}'}' - {2}",
+                        fracA,
+                        h.toPlainString(),
+                        k.abs().toPlainString());
             } else if (h.compareTo(new BigDecimal(0)) < 0 && k.compareTo(new BigDecimal(0)) >= 0) {
-                returnedLine = "y = " + fracA + "\\sqrt{x + " + h.abs().toPlainString() + "} + " + k.toPlainString();
+                returnedLine = format("y = {0}\\sqrt'{'x + {1}'}' + {2}",
+                        fracA,
+                        h.abs().toPlainString(),
+                        k.toPlainString());
             } else {
-                returnedLine = "y = " + fracA + "\\sqrt{x + " + h.abs().toPlainString() + "} - "
-                        + k.abs().toPlainString();
+                returnedLine = format("y = {0}\\sqrt'{'x + {1}'}' - {2}",
+                        fracA,
+                        h.abs().toPlainString(),
+                        k.abs().toPlainString());
             }
             if (useDomain) {
-                returnedLine += " \\left\\{" + domain[0] + "\\le x\\le" + domain[1] + "\\right\\}";
+                returnedLine += format(" \\left\\'{'{0}\\le x\\le{1}\\right\\'}'",
+                        domain[0],
+                        domain[1]);
             } else if (oldPoint[0].compareTo(newPoint[0]) < 0) {
-                returnedLine += " \\left\\{" + range[0] + "\\le y\\le" + range[1] + "\\right\\} \\left\\{" + domain[0]
-                        + "\\le x\\right\\}";
+                returnedLine += format(" \\left\\'{'{0}\\le y\\le{1}\\right\\'}' \\left\\'{'{2}\\le x\\right\\'}'",
+                        range[0],
+                        range[1],
+                        domain[0]);
             } else {
-                returnedLine += " \\left\\{" + range[0] + "\\le y\\le" + range[1] + "\\right\\} \\left\\{" + domain[0]
-                        + "\\ge x\\right\\}";
+                returnedLine += format(" \\left\\'{'{0}\\le y\\le{1}\\right\\'}' \\left\\'{'{2}\\ge x\\right\\'}'",
+                        range[0],
+                        range[1],
+                        domain[0]);
             }
         }
         return returnedLine;
     }
 
+    @Override
     public String mirroredLineForDesmos() {
-        String returnedLine;
-        returnedLine = (new QuadraticLine(oldPoint, newPoint).lineForDesmos());
-        return returnedLine;
+        return (new QuadraticLine(oldPoint, newPoint).lineForDesmos());
     }
 }
