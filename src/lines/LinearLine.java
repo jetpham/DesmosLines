@@ -95,18 +95,15 @@ public class LinearLine extends SuperLine {
     public String lineForDesmos() {
         String returnedLine = "";
         switch (lineType) {
-            case 0: // 'y = b' equation
-                returnedLine = "y = " + b + "\\left\\{" + domain[0] + "\\le x\\le" + domain[1] + "\\right\\}";
-                break;
-            case 1: // 'x = b' equation
-                returnedLine = "x = " + b + "\\left\\{" + range[0] + "\\le y\\le" + range[1] + "\\right\\}";
-                break;
-            case 2: // 'y = mx + b' equation
-                returnedLine = "y = " + fracM + "x + " + fracB + "\\left\\{" + domain[0] + "\\le x\\le" + domain[1]
-                        + "\\right\\}";
-                break;
-            default:
-                break;
+            case 0 -> // 'y = b' equation
+                    returnedLine = "y = " + b + "\\left\\{" + domain[0] + "\\le x\\le" + domain[1] + "\\right\\}";
+            case 1 -> // 'x = b' equation
+                    returnedLine = "x = " + b + "\\left\\{" + range[0] + "\\le y\\le" + range[1] + "\\right\\}";
+            case 2 -> // 'y = mx + b' equation
+                    returnedLine = "y = " + fracM + "x + " + fracB + "\\left\\{" + domain[0] + "\\le x\\le" + domain[1]
+                            + "\\right\\}";
+            default -> {
+            }
         }
         return returnedLine;
     }

@@ -36,25 +36,12 @@ public class Main {
         int seed = new Random().nextInt(4);
         SuperLine returnedSuperLine = null;
         switch (seed) {
-            case 0:
-                returnedSuperLine = new LinearLine(oldPoint, newPoint);
-
-                break;
-            case 1:
-                returnedSuperLine = new CubicLine(oldPoint, newPoint);
-
-                break;
-            case 2:
-                returnedSuperLine = new QuadraticLine(oldPoint, newPoint);
-
-                break;
-            case 3:
-                returnedSuperLine = new RootLine(oldPoint, newPoint);
-
-                break;
-
-            default:
-                break;
+            case 0 -> returnedSuperLine = new LinearLine(oldPoint, newPoint);
+            case 1 -> returnedSuperLine = new CubicLine(oldPoint, newPoint);
+            case 2 -> returnedSuperLine = new QuadraticLine(oldPoint, newPoint);
+            case 3 -> returnedSuperLine = new RootLine(oldPoint, newPoint);
+            default -> {
+            }
         }
         return returnedSuperLine;
     }
