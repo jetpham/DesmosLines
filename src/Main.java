@@ -39,13 +39,14 @@ public class Main {
     }
 
     public static SuperLine RandomLine(BigDecimal[] oldPoint, BigDecimal[] newPoint) {
-        int seed = new Random().nextInt(4);
+        int seed = new Random().nextInt(5);
         SuperLine returnedSuperLine = null;
         switch (seed) {
             case 0 -> returnedSuperLine = new LinearLine(oldPoint, newPoint);
             case 1 -> returnedSuperLine = new CubicLine(oldPoint, newPoint);
             case 2 -> returnedSuperLine = new QuadraticLine(oldPoint, newPoint);
             case 3 -> returnedSuperLine = new QuadradicRootLine(oldPoint, newPoint);
+            case 4 -> returnedSuperLine = new AbsoluteLine(oldPoint,newPoint);
             default -> {
             }
         }
@@ -73,6 +74,8 @@ public class Main {
                     lines.add(new QuadradicRootLine(oldPoint, newPoint));
                 } else if (cases[4].equals(i[2])) {
                     lines.add(new CubicLine(oldPoint, newPoint));
+                } else if (cases[5].equals(i[2])) {
+                    lines.add(new AbsoluteLine(oldPoint, newPoint));
                 }
             }
             firstPoint = false;
