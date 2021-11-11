@@ -16,24 +16,24 @@ import static java.nio.file.Files.readAllBytes;
 
 public class Main {
     private final static boolean mirrorLines = true;
-    private final static String resourcesPath = "C:\\Users\\Jet-Laptop\\Documents\\repos\\DesmosLines\\src\\main\\resources";
+    private final static String resourcesPath = "C:\\Users\\Jet Pham\\Documents\\repos\\DesmosLines\\src\\main\\resources";
 
     public static BigDecimal[][] getPointTable() {
         String text = "";
         try {
-            text = new String(readAllBytes(Paths
-                    .get(resourcesPath + "\\points.txt")));
+            text = new String(readAllBytes(Paths.get(resourcesPath + "\\points.txt")));
         } catch (IOException e) {
             e.printStackTrace();
         }
         ArrayList<BigDecimal[]> points = new ArrayList<>();
         for (String i : text.split("\n")) {
             BigDecimal[] bigDecimals;
-            bigDecimals = new BigDecimal[]{new BigDecimal(valueOf(parseDouble(i.split("\t")[0]))),
-                    new BigDecimal(valueOf(parseDouble(i.split("\t")[1]))), new BigDecimal(valueOf(parseDouble(i.split("\t")[2])))};
+            bigDecimals = new BigDecimal[] { new BigDecimal(valueOf(parseDouble(i.split("\t")[0]))),
+                    new BigDecimal(valueOf(parseDouble(i.split("\t")[1]))),
+                    new BigDecimal(valueOf(parseDouble(i.split("\t")[2]))) };
             points.add(bigDecimals);
         }
-        BigDecimal[][] pointsArray = {{}};
+        BigDecimal[][] pointsArray = { {} };
         pointsArray = points.toArray(pointsArray);
         return pointsArray;
     }
@@ -50,6 +50,7 @@ public class Main {
             default -> {
             }
         }
+        }
         return returnedSuperLine;
     }
 
@@ -57,13 +58,21 @@ public class Main {
 
         ArrayList<SuperLine> lines = new ArrayList<>();
         boolean firstPoint = true;
-        BigDecimal[] oldPoint = new BigDecimal[]{};
+        BigDecimal[] oldPoint = new BigDecimal[] {};
         BigDecimal[][] pointTable = getPointTable();
         final BigDecimal[] cases;
         cases = new BigDecimal[]{new BigDecimal("0.0"), new BigDecimal("1.0"), new BigDecimal("2.0"), new BigDecimal("3.0"), new BigDecimal("4.0")};
         for (BigDecimal[] i : pointTable) {
-            BigDecimal[] newPoint = {i[0], i[1]};
+            BigDecimal[] newPoint = { i[0], i[1] };
             if (!firstPoint) {
+                /*
+                * 0: random
+                * 1: linear
+                * 2: quadratic
+                * 3: root
+                * 4: cubic
+                * 
+                */
                 if (cases[0].equals(i[2])) {
                     lines.add(RandomLine(oldPoint, newPoint));
                 } else if (cases[1].equals(i[2])) {
@@ -95,8 +104,7 @@ public class Main {
 
         try {
             FileWriter myWriter;
-            myWriter = new FileWriter(
-                    resourcesPath + "\\output.txt");
+            myWriter = new FileWriter(resourcesPath + "\\output.txt");
             myWriter.write(essay.toString());
             myWriter.close();
             System.out.println("Successfully wrote to the file.");
