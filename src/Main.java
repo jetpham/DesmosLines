@@ -50,7 +50,7 @@ public class Main {
             default -> {
             }
         }
-        }
+
         return returnedSuperLine;
     }
 
@@ -61,7 +61,7 @@ public class Main {
         BigDecimal[] oldPoint = new BigDecimal[] {};
         BigDecimal[][] pointTable = getPointTable();
         final BigDecimal[] cases;
-        cases = new BigDecimal[]{new BigDecimal("0.0"), new BigDecimal("1.0"), new BigDecimal("2.0"), new BigDecimal("3.0"), new BigDecimal("4.0")};
+        cases = new BigDecimal[]{new BigDecimal("0.0"), new BigDecimal("1.0"), new BigDecimal("2.0"), new BigDecimal("3.0"), new BigDecimal("4.0"), new BigDecimal("5.0")};
         for (BigDecimal[] i : pointTable) {
             BigDecimal[] newPoint = { i[0], i[1] };
             if (!firstPoint) {
@@ -71,7 +71,7 @@ public class Main {
                 * 2: quadratic
                 * 3: root
                 * 4: cubic
-                * 
+                * 5: absolute
                 */
                 if (cases[0].equals(i[2])) {
                     lines.add(RandomLine(oldPoint, newPoint));
