@@ -129,6 +129,6 @@ public class CubicLine extends SuperLine {
 
     @Override
     public String mirroredLineForDesmos() {
-        return (new CubicRootLine(oldPoint, newPoint)).lineForDesmos();
+        return (new QuadradicRootLine(oldPoint, newPoint)).lineForDesmos();
     }
 }

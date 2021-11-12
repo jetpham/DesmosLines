@@ -1,6 +1,7 @@
 package src.lines;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 
 import static java.text.MessageFormat.format;
 
@@ -60,18 +61,13 @@ public class QuadradicRootLine extends SuperLine {
 
     private String asFraction(BigDecimal a, BigDecimal b) {
         BigDecimal gcd = gcd(a, b);
-        if ("1".equals(a.divide(gcd).toPlainString())) {
-            return format("\\frac'{'\\sqrt'{'{0}'}}{'{1}'}'",
-                    b,
-                    b.divide(gcd).toPlainString());
-        } else if ("1".equals(b.divide(gcd).toPlainString())) {
+        if ("1".equals(b.toPlainString())) {
             return format("{0}",
-                    a.divide(gcd).toPlainString());
+                    a.toPlainString());
         } else {
-            return format("\\frac'{'{0}\\sqrt'{'{1}'}}{'{2}'}'",
-                    a.divide(gcd).toPlainString(),
-                    b,
-                    b.divide(gcd).toPlainString());
+            return MessageFormat.format("\\frac'{'{0}'}{'\\sqrt'{'{1}'}}'",
+                    a.toPlainString(),
+                    b.toPlainString());
         }
     }
 
